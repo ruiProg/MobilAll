@@ -28,7 +28,7 @@ class UniqueUniv(object):
 				if item['city'] == city:
 					for name in self.alias[item['website']]:
 						if item['name'] == name:
-							logging.info("Repeated item:" + item)
+							logging.info("Repeated item:", item)
 							raise scrapy.exceptions.DropItem("Duplicate item found: %s" % item)
 			self.univs[item['website']].append(item['city'])
 			self.alias[item['website']].append(item['name'])
