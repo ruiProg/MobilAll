@@ -52,6 +52,7 @@ class UnivSpider(scrapy.Spider):
 				nextMeta[self.cityTag] = cityName
 				yield scrapy.Request(self.cityUrl.format(value), callback=self.parseUnivs, meta=nextMeta)
 		#some universities don't have a corresponding city information, obtain only the country
+		nextMeta = response.meta
 		nextMeta[self.cityTag] = ''
 		#iterate for every page with low priority in order to process universities with cities first
 		#duplicated university check in pipelines
