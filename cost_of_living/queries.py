@@ -46,3 +46,4 @@ def citiesList():
 	}
 	res = globalVal.es.search(index=globalVal.univsIndex, body=query)
 	return jsonify(res['aggregations']['cities'][globalVal.aggList])
+	
