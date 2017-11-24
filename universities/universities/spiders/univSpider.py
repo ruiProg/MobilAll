@@ -54,8 +54,8 @@ class UnivSpider(scrapy.Spider):
 		#some universities don't have a corresponding city information, obtain only the country
 		nextMeta = response.meta
 		nextMeta[self.cityTag] = ''
-		#iterate for every page with low priority in order to process universities with cities first
-		#duplicated university check in pipelines
+		#iterate for every page with low priority assigned in order to process universities with cities first
+		#duplicated university check is done in pipelines
 		acc = self.startIndex
 		while acc < response.meta[self.countTag]:
 			yield scrapy.Request(self.domPagedUrl.format(response.meta[self.domTag], acc), callback=self.parseUnivs, meta=nextMeta, priority=self.priorityLevel)
