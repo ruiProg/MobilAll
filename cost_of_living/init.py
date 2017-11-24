@@ -1,0 +1,3 @@
+import indexing
+
+indexing.indexTask()

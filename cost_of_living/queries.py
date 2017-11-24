@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-import globalVal
+import util
 
 queries_api = Blueprint('queries_api', __name__)
 
@@ -23,8 +23,8 @@ def countiesList():
 			}
 		}
 	}
-	res = globalVal.es.search(index=globalVal.univsIndex, body=query)
-	return jsonify(res['aggregations']['countries'][globalVal.aggList])
+	res = util.es.search(index=util.univsIndex, body=query)
+	return jsonify(res['aggregations']['countries'][util.aggList])
 
 #list of cities with universities
 #optimize query with size: 0
@@ -44,6 +44,6 @@ def citiesList():
 			}
 		}
 	}
-	res = globalVal.es.search(index=globalVal.univsIndex, body=query)
-	return jsonify(res['aggregations']['cities'][globalVal.aggList])
+	res = util.es.search(index=util.univsIndex, body=query)
+	return jsonify(res['aggregations']['cities'][util.aggList])
 	
