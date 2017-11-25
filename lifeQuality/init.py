@@ -33,17 +33,15 @@ def runKibana():
 		Popen([os.environ[util.kibana]], creationflags=CREATE_NEW_CONSOLE)
 
 #try:
-indexFlag = False
-if len(sys.argv) == 2 and sys.argv[1] == '-i':
-	indexFlag = True
 envDef()
-if indexFlag:
+if '-i' in sys.argv:
 	#indexing.deleteIndices()
 	removeSincedb()
 	indexing.createMappings()
 	#indexing.indexUnivs()
 	#indexing.indexFlows()
 	indexing.indexNumbeo()
-runKibana()
+if '-k' in sys.argv:
+	runKibana()
 #except:
 #	print('Unexpected error reindexing')
