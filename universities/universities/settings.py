@@ -71,7 +71,7 @@ ITEM_PIPELINES = {
 
 ELASTICSEARCH_SERVERS = ['localhost']
 ELASTICSEARCH_INDEX = 'mobil_univs'
-ELASTICSEARCH_TYPE = 'univs' # not used, but necessary for Backward compatibility
+ELASTICSEARCH_TYPE = 'doc' # not used - deprecated in v6, removed in v7, but necessary for Backward compatibility
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

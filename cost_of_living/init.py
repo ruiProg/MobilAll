@@ -1,3 +1,0 @@
-import indexing
-
-indexing.indexTask()
