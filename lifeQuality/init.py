@@ -56,5 +56,6 @@ if indexLifeQuality or '-l' in sys.argv:
 	indexing.indexLifeQuality()
 if '-k' in sys.argv:
 	runKibana()
+Popen(['flask', 'run'], cwd=os.path.join(os.environ[util.mobilAll], util.lifeQuality))
 #except:
 #	print('Unexpected error reindexing')

@@ -12,6 +12,8 @@ sincedb = ['data', 'plugins', 'inputs', 'file']
 univsIndex = 'mobil_univs'
 citiesIndex = 'mobil_cities'
 pricesIndex = 'mobil_prices'
+indicesIndex = 'mobil_indices'
+climateIndex = 'mobil_climate'
 defaultType = 'doc'
 aggList = 'buckets'
 

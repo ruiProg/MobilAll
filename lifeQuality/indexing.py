@@ -11,9 +11,12 @@ def createMappings():
 def processValue(value):
 	print("Processing {}".format(value['region']))
 	if value['cityFlag']:
-		indexPrices('city_prices', 'query', value['region'])
+		pass
+		#indexPrices('city_prices', 'query', value['region'])
+		#indexIndices('indices', 'query', value['region'])
 	else:
-		indexPrices('country_prices', 'country', value['region'])
+		#indexPrices('country_prices', 'country', value['region'])
+		indexIndices('country_indices', 'country', value['region'])
 
 	# check if city or country
 	# do API request with value['region']
@@ -47,7 +50,7 @@ def generatePriceDoc(item, parentID):
 		"_source": {
 			"item_id": item['item_id'],
 			"rent": mobilAll.getItem(item['item_id'])['rent'],
-			"cpi": mobilAll.getItem(item['item_id'])['cpi'],
+			"consumer_price_index": mobilAll.getItem(item['item_id'])['cpi'],
 			"itemName": mobilAll.getItem(item['item_id'])['itemName'],
 			"category": mobilAll.getItem(item['item_id'])['category'],
 			"regionPrice": {
@@ -117,7 +120,6 @@ def indexLifeQuality():
 def indexPrices(queryType, paramType, name):
 	requestUrl = '{}/{}?api_key={}&{}={}&currency={}'.format(util.apiUrl, queryType, util.apiKey, paramType, name, util.currency)
 	r = requests.get(requestUrl)
-	print(requestUrl)
 	data = json.loads(r.text)
 	if 'error' not in data:
 		doc = {
@@ -131,12 +133,22 @@ def indexPrices(queryType, paramType, name):
 			}
 		}
 		res = util.es.index(index=util.pricesIndex, doc_type=util.defaultType, body=doc)
-		print(res)
 		actions = [
 			generatePriceDoc(item, res['_id'])
 			for item in data['prices'] if 'item_id' in item
 		]
 		helpers.bulk(util.es, actions,routing=res['_id'])
 
+def indexIndices(queryType, paramType, name):
+	requestUrl = '{}/{}?api_key={}&{}={}'.format(util.apiUrl, queryType, util.apiKey, paramType, name)
+	r = requests.get(requestUrl)
+	data = json.loads(r.text)
+	if 'error' not in data:
+		data['regionName'] = data['name']
+		data['univRegion'] = name
+		data.pop('name')
+		util.es.index(index=util.indicesIndex, doc_type=util.defaultType, body=data)
+
 def deleteIndices():
 	util.es.indices.delete(index='*')
+
