@@ -21,20 +21,20 @@ def initDB():
 			db.cursor().executescript(f.read())
 		db.commit()
 
-def generalQuery(query, args=(), one=False):
+def generalQuery(query, args=()):
     cur = getDB().execute(query, args)
     rv = cur.fetchall()
     cur.close()
-    return (rv[0] if rv else None) if one else rv
+    return (rv[0] if rv else None)
 
 def existDBEntry(region, cityFlag):
-	return generalQuery('SELECT id FROM entry WHERE region=? AND cityFlag=?', (region, cityFlag), True) != None
+	return generalQuery('SELECT id FROM entry WHERE region=? AND cityFlag=?', (region, cityFlag)) != None
 
 def newEntryToProcess():
-	return generalQuery('SELECT id, region, cityFlag FROM entry WHERE done=0 ORDER BY id LIMIT 1', one=True)
+	return generalQuery('SELECT id, region, cityFlag FROM entry WHERE done=0 ORDER BY id LIMIT 1')
 
 def getEntry(id):
-	return generalQuery('SELECT id, region, cityFlag FROM entry WHERE id=?', (id,), True)
+	return generalQuery('SELECT id, region, cityFlag FROM entry WHERE id=?', (id,))
 
 def createDBEntry(region, cityFlag, done=0):
 	db = getDB()
@@ -50,6 +50,9 @@ def createItem(id, rent, cpi, name, category):
 	db = getDB()
 	db.cursor().execute('INSERT INTO item(id, rent, cpi, itemName, category) VALUES(?,?,?,?,?)', (id, rent, cpi, name, category))
 	db.commit()
+
+def getItem(id):
+	return generalQuery('SELECT id, rent, cpi, itemName, category FROM item WHERE id=?', (id,))
 
 @app.teardown_appcontext
 def close_connection(exception):

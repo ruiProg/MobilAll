@@ -10,11 +10,58 @@ def createMappings():
 
 def processValue(value):
 	print("Processing {}".format(value['region']))
+	if value['cityFlag']:
+		indexPrices('city_prices', 'query', value['region'])
+	else:
+		indexPrices('country_prices', 'country', value['region'])
+
 	# check if city or country
 	# do API request with value['region']
 	# denormalize response
 	# index information to ES
-	mobilAll.updateDBEntry(value['id'], 1)
+	#mobilAll.updateDBEntry(value['id'], 1)
+
+
+def generateCityDoc(city):
+	dic = {
+		"_index": util.citiesIndex,
+		"_type": util.defaultType,
+		"_source": {
+			"city": city['city'],
+			"country": city['country'],
+			"city_id": city['city_id']
+		}
+	}
+	if 'latitude' in city and 'longitude' in city:
+		dic['_source']['location'] = {
+			"lat": city['latitude'],
+			"lon": city['longitude']
+		}
+	return dic
+
+def generatePriceDoc(item, parentID):
+
+	dic = {
+		"_index": util.pricesIndex,
+		"_type": util.defaultType,
+		"_source": {
+			"item_id": item['item_id'],
+			"rent": mobilAll.getItem(item['item_id'])['rent'],
+			"cpi": mobilAll.getItem(item['item_id'])['cpi'],
+			"itemName": mobilAll.getItem(item['item_id'])['itemName'],
+			"category": mobilAll.getItem(item['item_id'])['category'],
+			"regionPrice": {
+				"name": "price",
+				"parent": parentID
+			},
+			"average_price": item['average_price']
+		}
+	}
+	if 'lowest_price' in item:
+		dic['_source']['lowest_price'] = item['lowest_price']
+	if 'highest_price' in item:
+		dic['_source']['highest_price'] = item['highest_price']
+	return dic
 
 def getItems():
 	requestUrl = '{}/price_items?api_key={}'.format(util.apiUrl, util.apiKey)
@@ -38,31 +85,8 @@ def indexCities():
 	r = requests.get(requestUrl)
 	data = json.loads(r.text)['cities']
 	actions = [
-	{
-		"_index": 'mobil_cities',
-		"_type": 'doc',
-		"_source": {
-			"city": city['city'],
-			"country": city['country'],
-			"city_id": city['city_id'],
-				"location" : {
-					"lat": city['latitude'],
-					"lon": city['longitude']
-				}
-		}
-	}
-	if 'latitude' in city and 'longitude' in city
-	else 
-	{
-		"_index": 'mobil_cities',
-		"_type": 'doc',
-		"_source": {
-			"city": city['city'],
-			"country": city['country'],
-			"city_id": city['city_id']
-		}
-	}
-	for city in data
+		generateCityDoc(city)
+		for city in data
 	]
 	helpers.bulk(util.es, actions)
 	print('Cities indexed')
@@ -89,6 +113,30 @@ def indexLifeQuality():
 		while value is not None:
 			processValue(value)
 			value = mobilAll.getEntry(value['id'] + 1)
+
+def indexPrices(queryType, paramType, name):
+	requestUrl = '{}/{}?api_key={}&{}={}&currency={}'.format(util.apiUrl, queryType, util.apiKey, paramType, name, util.currency)
+	r = requests.get(requestUrl)
+	print(requestUrl)
+	data = json.loads(r.text)
+	if 'error' not in data:
+		doc = {
+			"univRegion" : name,
+			"regionName": data['name'],
+			"monthLastUpdate": data['monthLastUpdate'],
+			"yearLastUpdate": data['yearLastUpdate'],
+			"contributors": data['contributors'],
+			"regionPrice": {
+				"name": "region"
+			}
+		}
+		res = util.es.index(index=util.pricesIndex, doc_type=util.defaultType, body=doc)
+		print(res)
+		actions = [
+			generatePriceDoc(item, res['_id'])
+			for item in data['prices'] if 'item_id' in item
+		]
+		helpers.bulk(util.es, actions,routing=res['_id'])
 
 def deleteIndices():
 	util.es.indices.delete(index='*')

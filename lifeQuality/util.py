@@ -10,6 +10,9 @@ flows = 'mobilityFlows'
 sincedb = ['data', 'plugins', 'inputs', 'file']
 
 univsIndex = 'mobil_univs'
+citiesIndex = 'mobil_cities'
+pricesIndex = 'mobil_prices'
+defaultType = 'doc'
 aggList = 'buckets'
 
 apiUrl = 'http://www.numbeo.com:8008/api'
@@ -18,6 +21,7 @@ localhost = '127.0.0.1'
 kibanaPort = 5601
 configFile = 'config.txt'
 dbSrc = 'indexProgress.db3'
+currency = 'EUR'
 
 es = Elasticsearch()
 univProc = None
