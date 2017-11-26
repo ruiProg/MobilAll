@@ -38,7 +38,7 @@ def runKibana():
 #try:
 envDef()
 indexLifeQuality = False
-if '-i' in sys.argv:
+if '-index' in sys.argv:
 	indexing.deleteIndices()
 	removeSincedb()
 	removeDB()
@@ -49,12 +49,12 @@ if '-i' in sys.argv:
 	indexing.getItems()
 	indexing.indexCities()
 	indexLifeQuality = True
-if indexLifeQuality or '-l' in sys.argv:
+if indexLifeQuality or '-lifeQuality' in sys.argv:
 	if util.univProc is not None:
 		print("Waiting for universities indexing")
 		util.univProc.wait()
 	indexing.indexLifeQuality()
-if '-k' in sys.argv:
+if '-kibana' in sys.argv:
 	runKibana()
 Popen(['flask', 'run'], cwd=os.path.join(os.environ[util.mobilAll], util.lifeQuality))
 #except:

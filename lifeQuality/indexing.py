@@ -8,22 +8,23 @@ import util, mobilAll
 def createMappings():
 	pass
 
+# check if city or country
+# do API request with value['region']
+# denormalize response
+# index information to ES
 def processValue(value):
 	print("Processing {}".format(value['region']))
 	if value['cityFlag']:
 		pass
-		#indexPrices('city_prices', 'query', value['region'])
-		#indexIndices('indices', 'query', value['region'])
+		indexPrices('city_prices', 'query', value['region'])
+		indexIndices('indices', 'query', value['region'])
+		indexClimate(value['region'])
+
 	else:
-		#indexPrices('country_prices', 'country', value['region'])
+		pass
+		indexPrices('country_prices', 'country', value['region'])
 		indexIndices('country_indices', 'country', value['region'])
-
-	# check if city or country
-	# do API request with value['region']
-	# denormalize response
-	# index information to ES
 	#mobilAll.updateDBEntry(value['id'], 1)
-
 
 def generateCityDoc(city):
 	dic = {
@@ -148,6 +149,28 @@ def indexIndices(queryType, paramType, name):
 		data['univRegion'] = name
 		data.pop('name')
 		util.es.index(index=util.indicesIndex, doc_type=util.defaultType, body=data)
+
+def indexClimate(name):
+	requestUrl = '{}/city_climate?api_key={}&query={}'.format(util.apiUrl, util.apiKey, name)
+	r = requests.get(requestUrl)
+	print(requestUrl)
+	'''data = json.loads(r.text)
+	if 'error' not in data:
+		doc = {
+			"univRegion" : name,
+			"regionName": data['name'],
+			"monthLastUpdate": data['monthLastUpdate'],
+			"yearLastUpdate": data['yearLastUpdate'],
+			"contributors": data['contributors'],
+			"regionPrice": {
+				"name": "region"
+			}
+		}
+		res = util.es.index(index=util.pricesIndex, doc_type=util.defaultType, body=doc)
+		actions = [
+			generatePriceDoc(item, res['_id'])
+			for item in data['prices'] if 'item_id' in item
+	'''
 
 def deleteIndices():
 	util.es.indices.delete(index='*')
