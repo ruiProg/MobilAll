@@ -12,6 +12,7 @@ sincedb = ['data', 'plugins', 'inputs', 'file']
 univsIndex = 'mobil_univs'
 aggList = 'buckets'
 
+apiUrl = 'http://www.numbeo.com:8008/api'
 apiKey = 'k5vqn17p7o1ono'
 localhost = '127.0.0.1'
 kibanaPort = 5601

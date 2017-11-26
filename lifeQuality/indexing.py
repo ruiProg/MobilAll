@@ -16,6 +16,15 @@ def processValue(value):
 	# index information to ES
 	mobilAll.updateDBEntry(value['id'], 1)
 
+def getItems():
+	requestUrl = '{}/price_items?api_key={}'.format(util.apiUrl, util.apiKey)
+	r = requests.get(requestUrl)
+	data = json.loads(r.text)['items']
+	with mobilAll.app.app_context():
+		for item in data:
+			mobilAll.createItem(item['item_id'], item['rent_factor'], item['cpi_factor'], item['name'], item['category'])
+	print('Items retrieved')
+
 def indexUnivs():
 	util.univProc = Popen(['scrapy', 'crawl', 'univSpider'], creationflags=CREATE_NEW_CONSOLE, cwd=os.path.join(os.environ[util.mobilAll], util.universities))
 
@@ -25,7 +34,7 @@ def indexFlows():
 	Popen([os.path.join(workDir,'logstash.bat'), '-f', file], creationflags=CREATE_NEW_CONSOLE, cwd=workDir)
 
 def indexCities():
-	requestUrl = 'http://www.numbeo.com:8008/api/cities?api_key={}'.format(util.apiKey)
+	requestUrl = '{}/cities?api_key={}'.format(util.apiUrl, util.apiKey)
 	r = requests.get(requestUrl)
 	data = json.loads(r.text)['cities']
 	actions = [

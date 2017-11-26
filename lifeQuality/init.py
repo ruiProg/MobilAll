@@ -39,15 +39,16 @@ def runKibana():
 envDef()
 indexLifeQuality = False
 if '-i' in sys.argv:
-	#indexing.deleteIndices()
-	#removeSincedb()
-	#removeDB()
-	#mobilAll.initDB()
-	#indexing.createMappings()
-	#indexing.indexUnivs()
-	#indexing.indexFlows()
+	indexing.deleteIndices()
+	removeSincedb()
+	removeDB()
+	mobilAll.initDB()
+	indexing.createMappings()
+	indexing.indexUnivs()
+	indexing.indexFlows()
+	indexing.getItems()
 	indexing.indexCities()
-	#indexLifeQuality = True
+	indexLifeQuality = True
 if indexLifeQuality or '-l' in sys.argv:
 	if util.univProc is not None:
 		print("Waiting for universities indexing")

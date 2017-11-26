@@ -46,6 +46,11 @@ def updateDBEntry(id, done):
 	db.cursor().execute('UPDATE entry SET done=? WHERE id=?', (done, id))
 	db.commit()
 
+def createItem(id, rent, cpi, name, category):
+	db = getDB()
+	db.cursor().execute('INSERT INTO item(id, rent, cpi, itemName, category) VALUES(?,?,?,?,?)', (id, rent, cpi, name, category))
+	db.commit()
+
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
