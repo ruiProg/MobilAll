@@ -2,26 +2,61 @@ from subprocess import call
 from flask import Blueprint
 from elasticsearch import helpers
 from subprocess import Popen, CREATE_NEW_CONSOLE
-import util
-import sys
-import os
-import mobilAll
+import sys, os, requests, json
+import util, mobilAll
 
 def createMappings():
 	pass
 
+def processValue(value):
+	print("Processing {}".format(value['region']))
+	# check if city or country
+	# do API request with value['region']
+	# denormalize response
+	# index information to ES
+	mobilAll.updateDBEntry(value['id'], 1)
+
 def indexUnivs():
-	Popen(['scrapy', 'crawl', 'univSpider'], creationflags=CREATE_NEW_CONSOLE, cwd=os.path.join(os.environ[util.mobilAll], util.universities))
+	util.univProc = Popen(['scrapy', 'crawl', 'univSpider'], creationflags=CREATE_NEW_CONSOLE, cwd=os.path.join(os.environ[util.mobilAll], util.universities))
 
 def indexFlows():
 	workDir = os.path.join(os.environ[util.logstash], 'bin')
 	file = os.path.join(os.environ[util.mobilAll], *[util.flows, 'flows.conf'])
 	Popen([os.path.join(workDir,'logstash.bat'), '-f', file], creationflags=CREATE_NEW_CONSOLE, cwd=workDir)
 
-
-def processValue(value):
-	print("Processing {}".format(value['region']))
-	mobilAll.updateDBEntry(value['id'], 1)
+def indexCities():
+	requestUrl = 'http://www.numbeo.com:8008/api/cities?api_key={}'.format(util.apiKey)
+	r = requests.get(requestUrl)
+	data = json.loads(r.text)['cities']
+	actions = [
+	{
+		"_index": 'mobil_cities',
+		"_type": 'doc',
+		"_source": {
+			"city": city['city'],
+			"country": city['country'],
+			"city_id": city['city_id'],
+				"location" : {
+					"lat": city['latitude'],
+					"lon": city['longitude']
+				}
+		}
+	}
+	if 'latitude' in city and 'longitude' in city
+	else 
+	{
+		"_index": 'mobil_cities',
+		"_type": 'doc',
+		"_source": {
+			"city": city['city'],
+			"country": city['country'],
+			"city_id": city['city_id']
+		}
+	}
+	for city in data
+	]
+	helpers.bulk(util.es, actions)
+	print('Cities indexed')
 
 #use scan abstraction of scroll in order to perform deep scrolling
 #performance time in retrieving is actually 0, time spent within communication and processing

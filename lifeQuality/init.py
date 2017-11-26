@@ -1,10 +1,6 @@
 from subprocess import Popen, CREATE_NEW_CONSOLE
-import indexing
-import os
-import util
-import sys
-import socket
-import mobilAll
+import os, util, sys, socket
+import indexing, mobilAll
 
 def envDef():
 	with open(util.configFile, 'r') as f:
@@ -44,14 +40,18 @@ envDef()
 indexLifeQuality = False
 if '-i' in sys.argv:
 	#indexing.deleteIndices()
-	removeSincedb()
-	removeDB()
-	mobilAll.initDB()
-	indexing.createMappings()
+	#removeSincedb()
+	#removeDB()
+	#mobilAll.initDB()
+	#indexing.createMappings()
 	#indexing.indexUnivs()
 	#indexing.indexFlows()
-	indexLifeQuality = True
+	indexing.indexCities()
+	#indexLifeQuality = True
 if indexLifeQuality or '-l' in sys.argv:
+	if util.univProc is not None:
+		print("Waiting for universities indexing")
+		util.univProc.wait()
 	indexing.indexLifeQuality()
 if '-k' in sys.argv:
 	runKibana()

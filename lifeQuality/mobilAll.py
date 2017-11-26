@@ -1,8 +1,7 @@
 from flask import Flask, g
 from queries import queries_api
+import sqlite3, os
 import util
-import sqlite3
-import os
 
 database = os.path.join(os.path.dirname(os.path.abspath(__file__)), util.dbSrc)
 app = Flask(__name__)

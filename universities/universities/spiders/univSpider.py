@@ -72,5 +72,4 @@ class UnivSpider(scrapy.Spider):
 				univ['state'] = response.meta[self.regionTag]
 			else:
 				univ['country'] = response.meta[self.regionTag]
-				univ['state'] = ''
 			yield univ
