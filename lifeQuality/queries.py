@@ -26,7 +26,6 @@ def countiesList():
 	res = util.es.search(index=util.univsIndex, body=query)
 	return jsonify(res['aggregations']['countries'][util.aggList])
 
-
 #list of cities with universities
 #optimize query with size: 0
 #average time with hits: 35ms

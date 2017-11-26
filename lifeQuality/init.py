@@ -4,6 +4,7 @@ import os
 import util
 import sys
 import socket
+import mobilAll
 
 def envDef():
 	with open(util.configFile, 'r') as f:
@@ -21,8 +22,14 @@ def removeSincedb():
 		try:
 			if os.path.isfile(path):
 				os.unlink(path)
-		except Exception as e:
+		except:
 			print('Cannot remove logstash log file')
+
+def removeDB():
+	try:
+		os.unlink(mobilAll.database)
+	except:
+		print('Cannot remove database')
 
 def runKibana():
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -34,13 +41,18 @@ def runKibana():
 
 #try:
 envDef()
+indexLifeQuality = False
 if '-i' in sys.argv:
 	#indexing.deleteIndices()
 	removeSincedb()
+	removeDB()
+	mobilAll.initDB()
 	indexing.createMappings()
 	#indexing.indexUnivs()
 	#indexing.indexFlows()
-	indexing.indexNumbeo()
+	indexLifeQuality = True
+if indexLifeQuality or '-l' in sys.argv:
+	indexing.indexLifeQuality()
 if '-k' in sys.argv:
 	runKibana()
 #except:
