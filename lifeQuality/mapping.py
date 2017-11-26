@@ -1,0 +1,2 @@
+def createMappings():
+	pass

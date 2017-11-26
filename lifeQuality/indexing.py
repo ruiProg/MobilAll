@@ -2,11 +2,8 @@ from subprocess import call
 from flask import Blueprint
 from elasticsearch import helpers
 from subprocess import Popen, CREATE_NEW_CONSOLE
-import sys, os, requests, json
+import sys, os, requests, json, calendar
 import util, mobilAll
-
-def createMappings():
-	pass
 
 # check if city or country
 # do API request with value['region']
@@ -15,16 +12,14 @@ def createMappings():
 def processValue(value):
 	print("Processing {}".format(value['region']))
 	if value['cityFlag']:
-		pass
 		indexPrices('city_prices', 'query', value['region'])
 		indexIndices('indices', 'query', value['region'])
 		indexClimate(value['region'])
 
 	else:
-		pass
 		indexPrices('country_prices', 'country', value['region'])
 		indexIndices('country_indices', 'country', value['region'])
-	#mobilAll.updateDBEntry(value['id'], 1)
+	mobilAll.updateDBEntry(value['id'], 1)
 
 def generateCityDoc(city):
 	dic = {
@@ -44,7 +39,6 @@ def generateCityDoc(city):
 	return dic
 
 def generatePriceDoc(item, parentID):
-
 	dic = {
 		"_index": util.pricesIndex,
 		"_type": util.defaultType,
@@ -61,11 +55,27 @@ def generatePriceDoc(item, parentID):
 			"average_price": item['average_price']
 		}
 	}
+
 	if 'lowest_price' in item:
 		dic['_source']['lowest_price'] = item['lowest_price']
 	if 'highest_price' in item:
 		dic['_source']['highest_price'] = item['highest_price']
 	return dic
+
+def generateClimateDoc(item, month, parentID):
+	dic = {
+		"_index": util.climateIndex,
+		"_type": util.defaultType,
+		"_source": item
+	}
+	dic['_source']['month'] = generateClimateDoc.months[month]
+	dic['_source']['cityClimate'] = {
+		"name": "climate",
+		"parent": parentID
+	}
+	return dic
+
+generateClimateDoc.months = dict((k,v) for k,v in enumerate(calendar.month_name))
 
 def getItems():
 	requestUrl = '{}/price_items?api_key={}'.format(util.apiUrl, util.apiKey)
@@ -136,9 +146,9 @@ def indexPrices(queryType, paramType, name):
 		res = util.es.index(index=util.pricesIndex, doc_type=util.defaultType, body=doc)
 		actions = [
 			generatePriceDoc(item, res['_id'])
-			for item in data['prices'] if 'item_id' in item
+			for item in data['prices'] if 'average_price' in item
 		]
-		helpers.bulk(util.es, actions,routing=res['_id'])
+		helpers.bulk(util.es, actions, routing=res['_id'])
 
 def indexIndices(queryType, paramType, name):
 	requestUrl = '{}/{}?api_key={}&{}={}'.format(util.apiUrl, queryType, util.apiKey, paramType, name)
@@ -153,25 +163,23 @@ def indexIndices(queryType, paramType, name):
 def indexClimate(name):
 	requestUrl = '{}/city_climate?api_key={}&query={}'.format(util.apiUrl, util.apiKey, name)
 	r = requests.get(requestUrl)
-	print(requestUrl)
-	'''data = json.loads(r.text)
-	if 'error' not in data:
+	data = json.loads(r.text)
+	if 'months' in data:
 		doc = {
 			"univRegion" : name,
 			"regionName": data['name'],
-			"monthLastUpdate": data['monthLastUpdate'],
-			"yearLastUpdate": data['yearLastUpdate'],
-			"contributors": data['contributors'],
-			"regionPrice": {
-				"name": "region"
+			"climate_index": data['climate_index'],
+			"best_months_to_visit_text": data['best_months_to_visit_text'],
+			"cityClimate": {
+				"name": "city"
 			}
 		}
-		res = util.es.index(index=util.pricesIndex, doc_type=util.defaultType, body=doc)
+		res = util.es.index(index=util.climateIndex, doc_type=util.defaultType, body=doc)
 		actions = [
-			generatePriceDoc(item, res['_id'])
-			for item in data['prices'] if 'item_id' in item
-	'''
+			generateClimateDoc(item, int(month), res['_id'])
+			for month, item in data['months'].items()
+		]
+		helpers.bulk(util.es, actions, routing=res['_id'])
 
 def deleteIndices():
 	util.es.indices.delete(index='*')
-

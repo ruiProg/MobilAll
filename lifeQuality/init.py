@@ -1,6 +1,6 @@
 from subprocess import Popen, CREATE_NEW_CONSOLE
 import os, util, sys, socket
-import indexing, mobilAll
+import indexing, mobilAll, mapping
 
 def envDef():
 	with open(util.configFile, 'r') as f:
@@ -43,7 +43,7 @@ if '-index' in sys.argv:
 	removeSincedb()
 	removeDB()
 	mobilAll.initDB()
-	indexing.createMappings()
+	mapping.createMappings()
 	indexing.indexUnivs()
 	indexing.indexFlows()
 	indexing.getItems()
