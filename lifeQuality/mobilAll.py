@@ -1,11 +1,11 @@
 from flask import Flask, g
-from queries import queries_api
+from geoQueries import geoQueries_api
 import sqlite3, os
 import util
 
 database = os.path.join(os.path.dirname(os.path.abspath(__file__)), util.dbSrc)
 app = Flask(__name__)
-app.register_blueprint(queries_api)
+app.register_blueprint(geoQueries_api)
 
 def getDB():
 	db = getattr(g, '_database', None)
