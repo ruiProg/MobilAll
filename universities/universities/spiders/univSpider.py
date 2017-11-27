@@ -18,10 +18,6 @@ class UnivSpider(scrapy.Spider):
 	domUrl = 'https://univ.cc/search.php?dom={}'
 	domPagedUrl = 'https://univ.cc/search.php?dom={}&key=&start={}'
 	cityUrl = 'https://univ.cc/search.php?town={}'
-	countTag = 'count'
-	cityTag = 'city'
-	domTag = 'dom'
-	regionTag = 'region'
 	startIndex = 1
 	itemsPerPage = 50
 	priorityLevel = -5
@@ -36,9 +32,9 @@ class UnivSpider(scrapy.Spider):
 				count, region = parseItem(item)
 				yield scrapy.Request(self.domUrl.format(value), callback=self.parseCities, 
 					meta={ 
-					self.domTag: value, #US or world region
-					self.countTag: count, #nb of universities in country/state
-					self.regionTag: region #name of country/state
+					'dom': value, #US or world region
+					'count': count, #nb of universities in country/state
+					'region': region #name of country/state
 					})
 
 
@@ -49,16 +45,16 @@ class UnivSpider(scrapy.Spider):
 				_, cityName = parseItem(item)
 				#add city name to metadata
 				nextMeta = response.meta
-				nextMeta[self.cityTag] = cityName
+				nextMeta['city'] = cityName
 				yield scrapy.Request(self.cityUrl.format(value), callback=self.parseUnivs, meta=nextMeta)
 		#some universities don't have a corresponding city information, obtain only the country
 		nextMeta = response.meta
-		nextMeta[self.cityTag] = ''
+		nextMeta['city'] = '' #clear value
 		#iterate for every page with low priority assigned in order to process universities with cities first
 		#duplicated university check is done in pipelines
 		acc = self.startIndex
-		while acc < response.meta[self.countTag]:
-			yield scrapy.Request(self.domPagedUrl.format(response.meta[self.domTag], acc), callback=self.parseUnivs, meta=nextMeta, priority=self.priorityLevel)
+		while acc < response.meta['count']:
+			yield scrapy.Request(self.domPagedUrl.format(response.meta['dom'], acc), callback=self.parseUnivs, meta=nextMeta, priority=self.priorityLevel)
 			acc += self.itemsPerPage
 
 	def parseUnivs(self, response):
@@ -66,10 +62,11 @@ class UnivSpider(scrapy.Spider):
 			univ = UnivItem()
 			univ['name'] = item.xpath('text()').extract_first() #not unique, some countries may have universities with same name
 			univ['website'] = item.xpath('@href').extract_first() #domain restriction allows to better determine a university through a single field
-			univ['city'] = response.meta[self.cityTag]
-			if response.meta[self.domTag].startswith(self.usIdentifier): #regions starting with edu_ belong to US
+			if response.meta['city']:
+				univ['city'] = response.meta['city']
+			if response.meta['dom'].startswith(self.usIdentifier): #regions starting with edu_ belong to US
 				univ['country'] = self.usName
-				univ['state'] = response.meta[self.regionTag]
+				univ['state'] = response.meta['region']
 			else:
-				univ['country'] = response.meta[self.regionTag]
+				univ['country'] = response.meta['region']
 			yield univ

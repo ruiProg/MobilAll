@@ -19,7 +19,7 @@ class UniqueUniv(object):
 	def process_item(self, item, spider):
 		if item['website'] in self.univs:
 			values = self.univs[item['website']]
-			if len(values) > 0 and not item['city']: #if there are cities set for university and only have country info
+			if len(values) > 0 and 'city' not in item: #if there are cities set for university and only have country info
 				raise scrapy.exceptions.DropItem("Duplicate item found: %s" % item)
 			#university is invalid if for the same city, there is an entry with same name
 			#same city, different name -> alias
