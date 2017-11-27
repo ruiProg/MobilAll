@@ -2,7 +2,7 @@ from subprocess import call
 from flask import Blueprint
 from elasticsearch import helpers
 from subprocess import Popen, CREATE_NEW_CONSOLE
-import sys, os, requests, json, calendar
+import sys, os, requests, json, calendar, threading, time
 import util, mobilAll
 
 # check if city or country
@@ -10,16 +10,31 @@ import util, mobilAll
 # denormalize response
 # index information to ES
 def processValue(value):
-	print("Processing {}".format(value['region']))
+	region = value['region']
+	print("Processing {}".format(region))
 	if value['cityFlag']:
-		indexPrices('city_prices', 'query', value['region'])
-		indexIndices('indices', 'query', value['region'])
-		indexClimate(value['region'])
-
+		indexPrices('city_prices', 'query', region)
+		indexIndices('indices', 'query', region)
+		indexClimate(region)
 	else:
-		indexPrices('country_prices', 'country', value['region'])
-		indexIndices('country_indices', 'country', value['region'])
-	mobilAll.updateDBEntry(value['id'], 1)
+		indexPrices('country_prices', 'country', region)
+		indexIndices('country_indices', 'country', region)
+
+def indexValue():
+	with mobilAll.app.app_context():
+		time.sleep(util.delay)
+		nbTries = util.nbTries
+		with util.lock:
+			value = mobilAll.newEntryToProcess()
+		while value is not None or nbTries > 0:
+			if value is not None:
+				processValue(value)
+				nbTries = util.nbTries
+			else:
+				nbTries -= 1
+				time.sleep(util.delay)
+			with util.lock:
+					value = mobilAll.newEntryToProcess()
 
 def generateCityDoc(city):
 	dic = {
@@ -39,15 +54,16 @@ def generateCityDoc(city):
 	return dic
 
 def generatePriceDoc(item, parentID):
+	dbItem = mobilAll.getItem(item['item_id'])
 	dic = {
 		"_index": util.pricesIndex,
 		"_type": util.defaultType,
 		"_source": {
 			"item_id": item['item_id'],
-			"rent": mobilAll.getItem(item['item_id'])['rent'],
-			"consumer_price_index": mobilAll.getItem(item['item_id'])['cpi'],
-			"itemName": mobilAll.getItem(item['item_id'])['itemName'],
-			"category": mobilAll.getItem(item['item_id'])['category'],
+			"rent": dbItem['rent'],
+			"consumer_price_index": dbItem['cpi'],
+			"itemName": dbItem['itemName'],
+			"category": dbItem['category'],
 			"regionPrice": {
 				"name": "price",
 				"parent": parentID
@@ -77,6 +93,7 @@ def generateClimateDoc(item, month, parentID):
 
 generateClimateDoc.months = dict((k,v) for k,v in enumerate(calendar.month_name))
 
+#store items in sqlite3 db
 def getItems():
 	requestUrl = '{}/price_items?api_key={}'.format(util.apiUrl, util.apiKey)
 	r = requests.get(requestUrl)
@@ -115,6 +132,12 @@ def indexLifeQuality():
 	}
 	res = helpers.scan(index=util.univsIndex, client=util.es, query=allUnivs)
 	with mobilAll.app.app_context():
+		util.threads = []
+		for i in range(util.nbThreads):
+			t = threading.Thread(target=indexValue)
+			t.daemon = True
+			util.threads.append(t)
+			t.start()
 		for i in res:
 			city = i['_source']['city']
 			country = i['_source']['country']
@@ -122,17 +145,12 @@ def indexLifeQuality():
 				mobilAll.createDBEntry(city, 1)
 			if country and not mobilAll.existDBEntry(country, 0):
 				mobilAll.createDBEntry(country, 0)
-			print('Checking {} : {}'.format(city if city else '_', country))
-		value = mobilAll.newEntryToProcess()
-		while value is not None:
-			processValue(value)
-			value = mobilAll.getEntry(value['id'] + 1)
 
 def indexPrices(queryType, paramType, name):
 	requestUrl = '{}/{}?api_key={}&{}={}&currency={}'.format(util.apiUrl, queryType, util.apiKey, paramType, name, util.currency)
 	r = requests.get(requestUrl)
 	data = json.loads(r.text)
-	if 'error' not in data:
+	if 'error' not in data and 'name' in data:
 		doc = {
 			"univRegion" : name,
 			"regionName": data['name'],
@@ -154,7 +172,7 @@ def indexIndices(queryType, paramType, name):
 	requestUrl = '{}/{}?api_key={}&{}={}'.format(util.apiUrl, queryType, util.apiKey, paramType, name)
 	r = requests.get(requestUrl)
 	data = json.loads(r.text)
-	if 'error' not in data:
+	if 'error' not in data and 'name' in data:
 		data['regionName'] = data['name']
 		data['univRegion'] = name
 		data.pop('name')
@@ -164,7 +182,7 @@ def indexClimate(name):
 	requestUrl = '{}/city_climate?api_key={}&query={}'.format(util.apiUrl, util.apiKey, name)
 	r = requests.get(requestUrl)
 	data = json.loads(r.text)
-	if 'months' in data:
+	if 'months' in data and 'name' in data:
 		doc = {
 			"univRegion" : name,
 			"regionName": data['name'],

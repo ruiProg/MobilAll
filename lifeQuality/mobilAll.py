@@ -31,7 +31,10 @@ def existDBEntry(region, cityFlag):
 	return generalQuery('SELECT id FROM entry WHERE region=? AND cityFlag=?', (region, cityFlag)) != None
 
 def newEntryToProcess():
-	return generalQuery('SELECT id, region, cityFlag FROM entry WHERE done=0 ORDER BY id LIMIT 1')
+	value = generalQuery('SELECT id, region, cityFlag FROM entry WHERE done=0 ORDER BY id LIMIT 1')
+	if value is not None:
+		updateDBEntry(value['id'], 1)
+	return value
 
 def getEntry(id):
 	return generalQuery('SELECT id, region, cityFlag FROM entry WHERE id=?', (id,))

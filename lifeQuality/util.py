@@ -1,4 +1,5 @@
 from elasticsearch import Elasticsearch
+from threading import Lock
 import os
 
 mobilAll = 'MOBIL_ALL'
@@ -25,5 +26,12 @@ configFile = 'config.txt'
 dbSrc = 'indexProgress.db3'
 currency = 'EUR'
 
+threads = []
+nbThreads = 10
+nbTries = 3
+delay = 5
+quit = False
+
 es = Elasticsearch()
+lock = Lock()
 univProc = None
