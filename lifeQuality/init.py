@@ -8,8 +8,7 @@ def envDef():
 		for entry in entries:
 			key, value = entry.split('=')
 			os.environ[key] = value
-		appFolder = os.path.dirname(os.path.abspath(__file__))
-		os.environ[util.mobilAll], _ = os.path.split(appFolder)
+		os.environ[util.mobilAll] = os.path.dirname(os.getcwd())
 
 def removeSincedb():
 	folder = os.path.join(os.environ[util.logstash], *util.sincedb)
@@ -36,6 +35,7 @@ def runKibana():
 		Popen([os.environ[util.kibana]], creationflags=CREATE_NEW_CONSOLE)
 
 #try:
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 envDef()
 indexLifeQuality = False
 if '-index' in sys.argv:
