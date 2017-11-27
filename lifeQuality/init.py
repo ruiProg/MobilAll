@@ -15,13 +15,14 @@ def envDef():
 #remove files that block reindexing student flows through Logstash
 def removeSincedb():
 	folder = os.path.join(os.environ[util.logstash], *util.sincedb)
-	for file in os.listdir(folder):
-		path = os.path.join(folder, file)
-		try:
-			if os.path.isfile(path):
-				os.unlink(path)
-		except:
-			print('Cannot remove logstash log file')
+	if os.path.exists(folder):
+		for file in os.listdir(folder):
+			path = os.path.join(folder, file)
+			try:
+				if os.path.isfile(path):
+					os.unlink(path)
+			except:
+				print('Cannot remove logstash log file')
 
 #remove sqlite3 db containing progress and list of items
 def removeDB():
@@ -66,7 +67,6 @@ if indexLifeQuality or '-lifeQuality' in sys.argv:
 	indexing.indexLifeQuality()
 if '-kibana' in sys.argv:
 	runKibana()
-
 #wait for threads
 for t in util.threads:
 	t.join()
