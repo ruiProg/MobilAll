@@ -11,12 +11,12 @@ flows = 'mobilityFlows'
 sincedb = ['data', 'plugins', 'inputs', 'file']
 
 univsIndex = 'mobil_univs'
+flowsIndex = 'mobil_flows'
 citiesIndex = 'mobil_cities'
 pricesIndex = 'mobil_prices'
 indicesIndex = 'mobil_indices'
 climateIndex = 'mobil_climate'
 defaultType = 'doc'
-aggList = 'buckets'
 
 apiUrl = 'http://www.numbeo.com:8008/api'
 apiKey = 'k5vqn17p7o1ono'
@@ -25,6 +25,7 @@ kibanaPort = 5601
 configFile = 'config.txt'
 dbSrc = 'indexProgress.db3'
 currency = 'EUR'
+defaultSize = 10
 
 threads = []
 nbThreads = 10
@@ -35,3 +36,4 @@ quit = False
 es = Elasticsearch()
 lock = Lock()
 univProc = None
+debug = True

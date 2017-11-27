@@ -28,14 +28,14 @@ def countriesList():
 	if nameSort > 0:
 		query['aggs']['countries']['terms']['order'] = { "_key" : "asc" }
 	res = util.es.search(index=util.univsIndex, body=query)
-	return jsonify(res['aggregations']['countries'][util.aggList])
+	return jsonify(res['aggregations']['countries']['buckets'])
 
 #list of cities with universities
 #optimize query with size: 0
 #average time with hits: 35ms
 #average time without hits: 25ms
 @geoQueries_api.route('/api/cities')
-def citiesList(nameSort=False):
+def citiesList():
 	maxCities = 4000
 	nameSort = int(request.args.get('sort', '0'))
 	query = {
@@ -52,11 +52,11 @@ def citiesList(nameSort=False):
 	if nameSort > 0:
 		query['aggs']['cities']['terms']['order'] = { "_key" : "asc" }
 	res = util.es.search(index=util.univsIndex, body=query)
-	return jsonify(res['aggregations']['cities'][util.aggList])
+	return jsonify(res['aggregations']['cities']['buckets'])
 
 
 @geoQueries_api.route('/api/states')
-def statesList(nameSort=False):
+def statesList():
 	maxStates = 60
 	nameSort = int(request.args.get('sort', '0'))
 	query = {
@@ -73,4 +73,24 @@ def statesList(nameSort=False):
 	if nameSort > 0:
 		query['aggs']['states']['terms']['order'] = { "_key" : "asc" }
 	res = util.es.search(index=util.univsIndex, body=query)
-	return jsonify(res['aggregations']['states'][util.aggList])
+	return jsonify(res['aggregations']['states']['buckets'])
+
+@geoQueries_api.route('/api/countryCities')
+def countryCities():
+	name = request.args.get('country', '')
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from": offset,
+		"size": size,
+		"query": {
+			"match": {
+				"country": name
+			}
+		}
+	} 
+	res = util.es.search(index=util.citiesIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No cities found'
