@@ -1,5 +1,6 @@
 from flask import Flask, g
 from geoQueries import geoQueries_api
+from priceQueries import priceQueries_api
 import sqlite3, os
 import util
 
@@ -26,6 +27,15 @@ def generalQuery(query, args=()):
     rv = cur.fetchall()
     cur.close()
     return (rv[0] if rv else None)
+
+def selectAllQuery(query, args=()):
+	cur = getDB().execute(query, args)
+	rv = cur.fetchall()
+	cur.close()
+	return (rv if rv else None)
+
+def getItems():
+    return selectAllQuery('SELECT id, rent, cpi, itemName, category FROM item')
 
 def existDBEntry(region, cityFlag):
 	return generalQuery('SELECT id FROM entry WHERE region=? AND cityFlag=?', (region, cityFlag)) != None

@@ -28,7 +28,18 @@ def createCityIndex():
 
 def createPriceIndex():
 	doc = {
-
+    	"mappings": {
+        	"doc": {
+            	"properties": {
+                	"regionPrice": {
+                    	"type": "join",
+						"relations": {
+							"region" : "price"
+						}
+                	}
+            	}
+        	}
+     	}
 	}
 	util.es.indices.create(index=util.pricesIndex, body=doc)
 
