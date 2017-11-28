@@ -33,7 +33,7 @@ def placeClimate():
 	else:
 		return 'No item found'
 
-#finder months in a city that have higher climate index than the threshold
+#find months in a city that have higher climate index than the threshold
 @climateQueries_api.route('/api/climateBestMonths')
 def climateBestMonths():
 	place = request.args.get('place', '')
@@ -69,3 +69,29 @@ def climateBestMonths():
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
 		return 'No item found'
+
+#find climate in a city
+@climateQueries_api.route('/api/sortedCityClimate')
+def sortedCityClimate():
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from": 0,
+		"size": 10,
+		"query" : {
+			"has_child" : {
+				"type": "climate", 
+				"query" : {
+					"match_all": {}
+				}
+			}
+		},
+		"sort" : [ {"climate_index" : {"order" : "desc"}} ]
+	}
+	res = util.es.search(index=util.climateIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
+
+
