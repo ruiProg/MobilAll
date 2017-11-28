@@ -13,7 +13,6 @@ geoQueries_api = Blueprint('geoQueries_api', __name__)
 def countriesList():
 	maxCountries = 250
 	nameSort = int(request.args.get('sort', '0'))
-	print(nameSort)
 	query = {
 		"size": 0, #don't retrieve hits
 		"aggs" : {

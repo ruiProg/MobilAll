@@ -20,6 +20,7 @@ def processValue(value):
 		indexPrices('country_prices', 'country', region)
 		indexIndices('country_indices', 'country', region)
 
+#obtain new entry to process, if after three attempts there is no value, the function termninates
 def indexValue():
 	with mobilAll.app.app_context():
 		time.sleep(util.delay)
