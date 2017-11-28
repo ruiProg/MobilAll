@@ -51,7 +51,18 @@ def createIndiceIndex():
 
 def createClimateIndex():
 	doc = {
-
+    	"mappings": {
+        	"doc": {
+            	"properties": {
+                	"cityClimate": {
+                    	"type": "join",
+						"relations": {
+							"city" : "climate"
+						}
+                	}
+            	}
+        	}
+     	}
 	}
 	util.es.indices.create(index=util.climateIndex, body=doc)
 

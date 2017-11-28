@@ -3,6 +3,8 @@ import util, mobilAll, json
 
 priceQueries_api = Blueprint('priceQueries_api', __name__)
 
+#Item price queries
+
 #all items
 @priceQueries_api.route('/api/items')
 def items():
@@ -20,6 +22,7 @@ def items():
 	]
 	return json.dumps(itList)
 
+#list of prices of an item in a place
 @priceQueries_api.route('/api/itemPricebyPlace')
 def itemPricebyPlace():
 	item = request.args.get('item', '')
@@ -52,6 +55,7 @@ def itemPricebyPlace():
 	else:
 		return 'No item found'
 
+#list of all item prices in a place
 @priceQueries_api.route('/api/placePrices')
 def placePrices():
 	place = request.args.get('place', '')
@@ -76,6 +80,7 @@ def placePrices():
 	else:
 		return 'No item found'
 
+#list of item prices for a category in a place
 @priceQueries_api.route('/api/categorybyPlace')
 def categorybyPlace():
 	category = request.args.get('category', '')
