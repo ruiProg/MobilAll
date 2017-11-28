@@ -76,8 +76,8 @@ def sortedCityClimate():
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
 	query = {
-		"from": 0,
-		"size": 10,
+		"from": offset,
+		"size": size,
 		"query" : {
 			"has_child" : {
 				"type": "climate", 
@@ -94,4 +94,66 @@ def sortedCityClimate():
 	else:
 		return 'No item found'
 
+#find cities where certain month is within best months to visit
+@climateQueries_api.route('/api/climateMonthBestCities')
+def climateMonthBestCities():
+	month = request.args.get('month','')
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	nameSort = int(request.args.get('sort', '0'))
+	query = {
+		"from": offset,
+		"size": size,
+		"query" : {
+			"match": {
+		  		"best_months_to_visit_text": month
+			}
+		}
+	}
+	if nameSort > 0:
+		query['sort'] = ["univRegion.keyword"]
+	res = util.es.search(index=util.climateIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
 
+#Check which month, city pair have temperatures between certain limits
+@climateQueries_api.route('/api/climateLimits')
+def climateLimits():
+	month = request.args.get('month','')
+	place = request.args.get('place','')
+	minTemp = float(request.args.get('min', '0'))
+	maxTemp = float(request.args.get('max', '0'))
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from" : offset, 
+		"size" : size,
+		"query" : {
+		  "bool": {
+		    "must": [{
+    			"has_parent" : {
+    				"parent_type": "city", 
+    				"query" :{
+    					"match_all": {}
+    				},
+    				"inner_hits": { "_source" : ["univRegion", "regionName"]}
+    			}
+		    }],
+		    "filter": [
+		      {"range" : {"temp_high_avg" : {"lte" : maxTemp}}},
+		      {"range" : {"temp_low_avg" : {"gte" : minTemp}}}
+		    ]
+		  }
+		}
+	}
+	if place:
+		query['query']['bool']['must'][0]['has_parent']['query'] = {"match": { "regionName": place}}
+	if month:
+		query['query']['bool']['must'].append({"match" : {"month" : month}})
+	res = util.es.search(index=util.climateIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
