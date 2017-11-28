@@ -42,8 +42,7 @@ def generateCityDoc(city):
 		"_type": util.defaultType,
 		"_source": {
 			"city": city['city'],
-			"country": city['country'],
-			"city_id": city['city_id']
+			"country": city['country']
 		}
 	}
 	if 'latitude' in city and 'longitude' in city:

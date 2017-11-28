@@ -152,7 +152,6 @@ def city():
 def closeCities():
 	latVar = float(request.args.get('lat', '0.0'))
 	lonVar = float(request.args.get('lon', '0.0'))
-	print(lonVar)
 	distance = float(request.args.get('distance', '10.0'))
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))

@@ -40,37 +40,37 @@ def runKibana():
 	else:
 		Popen([os.environ[util.kibana]], creationflags=CREATE_NEW_CONSOLE)
 
-#try:
-#update working directory
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-#set environment variables
-envDef()
-indexLifeQuality = False
-if '-index' in sys.argv:
-	#remove everything before indexing
-	indexing.deleteIndices()
-	removeSincedb()
-	removeDB()
-	#start sqlite3 db
-	mobilAll.initDB()
-	#create the indexing mapping
-	mapping.createMappings()
-	indexing.indexUnivs()
-	indexing.indexFlows()
-	indexing.getItems()
-	indexing.indexCities()
-	indexLifeQuality = True
-if indexLifeQuality or '-lifeQuality' in sys.argv:
-	if util.univProc is not None:
-		print("Waiting for universities indexing")
-		util.univProc.wait()
-	indexing.indexLifeQuality()
-if '-kibana' in sys.argv:
-	runKibana()
-#wait for threads
-for t in util.threads:
-	t.join()
-#run the server
-Popen(['flask', 'run'], cwd=os.path.join(os.environ[util.mobilAll], util.lifeQuality))
-#except:
-#	print('Unexpected error reindexing')
+try:
+	#update working directory
+	os.chdir(os.path.dirname(os.path.abspath(__file__)))
+	#set environment variables
+	envDef()
+	indexLifeQuality = False
+	if '-index' in sys.argv:
+		#remove everything before indexing
+		indexing.deleteIndices()
+		removeSincedb()
+		removeDB()
+		#start sqlite3 db
+		mobilAll.initDB()
+		#create the indexing mapping
+		mapping.createMappings()
+		indexing.indexUnivs()
+		indexing.indexFlows()
+		indexing.getItems()
+		indexing.indexCities()
+		indexLifeQuality = True
+	if indexLifeQuality or '-lifeQuality' in sys.argv:
+		if util.univProc is not None:
+			print("Waiting for universities indexing")
+			util.univProc.wait()
+		indexing.indexLifeQuality()
+	if '-kibana' in sys.argv:
+		runKibana()
+	#wait for threads
+	for t in util.threads:
+		t.join()
+	#run the server
+	Popen(['flask', 'run'], cwd=os.path.join(os.environ[util.mobilAll], util.lifeQuality))
+except:
+	print('Unexpected error reindexing')
