@@ -2,6 +2,7 @@ from flask import Flask, g
 from geoQueries import geoQueries_api
 from priceQueries import priceQueries_api
 from climateQueries import climateQueries_api
+from univQueries import univQueries_api
 import sqlite3, os
 import util
 
@@ -10,6 +11,7 @@ app = Flask(__name__)
 app.register_blueprint(geoQueries_api)
 app.register_blueprint(priceQueries_api)
 app.register_blueprint(climateQueries_api)
+app.register_blueprint(univQueries_api)
 
 def getDB():
 	db = getattr(g, '_database', None)
