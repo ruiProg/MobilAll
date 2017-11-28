@@ -39,10 +39,13 @@ def itemPricebyPlace():
 					{
 						"has_parent" : {
 							"parent_type": "region",
-							"query": {
-								"match": { "univRegion": place}
+							"query" :{
+								"multi_match" : {
+								"query": place,
+									"fields": ["univRegion", "regionName"]
+								}
 							},
-							"inner_hits": { "_source" : ["univRegion"]}
+							"inner_hits": { "_source" : ["univRegion", "regionName"]}
 						}
 					}
 				]
@@ -67,10 +70,13 @@ def placePrices():
 		"query" : {
 			"has_parent" : {
 				"parent_type": "region", 
-				"query": {
-					"match": { "univRegion": place}
+				"query" :{
+					"multi_match" : {
+						"query": place,
+						"fields": ["univRegion", "regionName"]
+					}
 				},
-				"inner_hits": { "_source" : ["univRegion"]} 
+				"inner_hits": { "_source" : ["univRegion", "regionName"]} 
 			}
 		}
 	}
@@ -97,10 +103,13 @@ def categorybyPlace():
 					{
 						"has_parent" : {
 							"parent_type": "region",
-							"query": {
-								"match": { "univRegion": place}
-							}, 
-							"inner_hits": { "_source" : ["univRegion"]} 
+							"query" :{
+								"multi_match" : {
+								"query": place,
+									"fields": ["univRegion", "regionName"]
+								}
+							},
+							"inner_hits": { "_source" : ["univRegion", "regionName"]} 
 						}
 					}
 				]
@@ -112,3 +121,81 @@ def categorybyPlace():
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
 		return 'No item found'
+
+@priceQueries_api.route('/api/itemPriceHigherThanAverage')
+def itemPriceHigherThanAverage():
+	item = request.args.get('item', '')
+	place = request.args.get('place', '')
+	offset = int(request.args.get('from', '0'))
+	average = float(request.args.get('average', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from" : offset, 
+		"size" : size,
+		"query" : { 
+			"bool" : {
+				"must" : [
+					{"match": {"itemName": item}},
+					{
+						"has_parent" : {
+							"parent_type": "region",
+							"query": {
+								"multi_match": {
+								  "query" : place,
+								"fields" :  ["univRegion", "regionName"] }
+							},
+							"inner_hits": { "_source" : ["univRegion", "regionName"]}
+						}
+					}
+				],
+				"filter" : [
+				  {"range" : {"average_price" : {"gte" : average}}}
+				  ]
+			}
+		}
+    }
+	res = util.es.search(index=util.pricesIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
+
+@priceQueries_api.route('/api/itemPriceLowerThanAverage')
+def itemPriceLowerThanAverage():
+	item = request.args.get('item', '')
+	place = request.args.get('place', '')
+	offset = int(request.args.get('from', '0'))
+	average = float(request.args.get('average', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from" : offset, 
+		"size" : size,
+		"query" : { 
+			"bool" : {
+				"must" : [
+					{"match": {"itemName": item}},
+					{
+						"has_parent" : {
+							"parent_type": "region",
+							"query": {
+								"multi_match": {
+								  "query" : place,
+								"fields" :  ["univRegion", "regionName"] }
+							},
+							"inner_hits": { "_source" : ["univRegion", "regionName"]}
+						}
+					}
+				],
+				"filter" : [
+				  {"range" : {"average_price" : {"lte" : average}}}
+				  ]
+			}
+		}
+    }
+	res = util.es.search(index=util.pricesIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
+
+
