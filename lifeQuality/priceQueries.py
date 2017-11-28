@@ -1,15 +1,16 @@
 from flask import Blueprint, jsonify, request
-import util
+import util, mobilAll
 
 priceQueries_api = Blueprint('priceQueries_api', __name__)
 
 #all items
 @priceQueries_api.route('/api/items')
 def items():
-	name = request.args.get('name', '')
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
-	query = {
+	print(mobilAll.getItems())
+	return 'Hello'
+	'''query = {
 		"from": offset,
 		"size": size,
 		"query": {
@@ -22,4 +23,4 @@ def items():
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
-		return 'No item found'
+		return 'No item found'''
