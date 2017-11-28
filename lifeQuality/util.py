@@ -25,7 +25,6 @@ kibanaPort = 5601
 configFile = 'config.txt'
 dbSrc = 'indexProgress.db3'
 currency = 'EUR'
-distanceUnit = 'Km'
 defaultSize = 10
 
 threads = []

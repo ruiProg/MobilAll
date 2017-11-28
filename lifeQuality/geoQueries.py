@@ -164,7 +164,7 @@ def closeCities():
 	            },
 	            "filter" : {
 	                "geo_distance" : {
-	                    "distance" : str(distance)+util.distanceUnit,
+	                    "distance" : str(distance)+"km",
 	                    "location" : {
 	                        "lat" : latVar,
 	                        "lon" : lonVar
@@ -181,7 +181,7 @@ def closeCities():
 	    			"lon" : lonVar
 	    		},
 	    		"order" : "asc",
-	    		"unit" : util.distanceUnit,
+	    		"unit" : "km",
 	    		"mode" : "min"
 	    	}
 	    }]
