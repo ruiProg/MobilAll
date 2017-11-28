@@ -35,9 +35,6 @@ def selectAllQuery(query, args=()):
 	cur.close()
 	return (rv if rv else None)
 
-def getItems():
-    return selectAllQuery('SELECT id, rent, cpi, itemName, category FROM item')
-
 def existDBEntry(region, cityFlag):
 	return generalQuery('SELECT id FROM entry WHERE region=? AND cityFlag=?', (region, cityFlag)) != None
 
@@ -67,6 +64,9 @@ def createItem(id, rent, cpi, name, category):
 
 def getItem(id):
 	return generalQuery('SELECT id, rent, cpi, itemName, category FROM item WHERE id=?', (id,))
+
+def getItems():
+    return selectAllQuery('SELECT id, rent, cpi, itemName, category FROM item')
 
 @app.teardown_appcontext
 def close_connection(exception):
