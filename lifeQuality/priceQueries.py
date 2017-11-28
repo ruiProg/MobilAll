@@ -23,3 +23,36 @@ def items():
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
 		return 'No item found'
+
+@priceQueries_api.route('/api/itemPricebyPlace')
+def itemPricebyPlace():
+	item = request.args.get('item', '')
+	place = request.args.get('place', '')
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from" : offset, 
+		"size" : size,
+		"query" : { 
+			"bool" : {
+				"must" : [
+					{"match": {"itemName": item}},
+					{
+						"has_parent" : {
+							"parent_type": "region",
+							"query": {
+								"match": { "univRegion": place}
+							},
+							"inner_hits": { "_source" : ["univRegion"]}
+						}
+					}
+				]
+			}
+		}
+    }
+	res = util.es.search(index=util.pricesIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
+

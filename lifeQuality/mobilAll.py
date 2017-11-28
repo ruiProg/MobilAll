@@ -7,6 +7,7 @@ import util
 database = os.path.join(os.path.dirname(os.path.abspath(__file__)), util.dbSrc)
 app = Flask(__name__)
 app.register_blueprint(geoQueries_api)
+app.register_blueprint(priceQueries_api)
 
 def getDB():
 	db = getattr(g, '_database', None)
