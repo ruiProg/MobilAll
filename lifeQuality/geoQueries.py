@@ -80,6 +80,7 @@ def countryCities():
 	name = request.args.get('country', '')
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
+	nameSort = int(request.args.get('sort', '0'))
 	query = {
 		"from": offset,
 		"size": size,
@@ -88,7 +89,9 @@ def countryCities():
 				"country": name
 			}
 		}
-	} 
+	}
+	if nameSort > 0:
+		query['sort'] = ["city.keyword"]
 	res = util.es.search(index=util.citiesIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})

@@ -122,12 +122,12 @@ def categorybyPlace():
 	else:
 		return 'No item found'
 
+#list of cities where certain item is higher than certain value
 @priceQueries_api.route('/api/itemPriceHigherThanAverage')
 def itemPriceHigherThanAverage():
 	item = request.args.get('item', '')
-	place = request.args.get('place', '')
 	offset = int(request.args.get('from', '0'))
-	average = float(request.args.get('average', '0'))
+	value = float(request.args.get('value', '0'))
 	size = int(request.args.get('size', util.defaultSize))
 	query = {
 		"from" : offset, 
@@ -135,22 +135,11 @@ def itemPriceHigherThanAverage():
 		"query" : { 
 			"bool" : {
 				"must" : [
-					{"match": {"itemName": item}},
-					{
-						"has_parent" : {
-							"parent_type": "region",
-							"query": {
-								"multi_match": {
-								  "query" : place,
-								"fields" :  ["univRegion", "regionName"] }
-							},
-							"inner_hits": { "_source" : ["univRegion", "regionName"]}
-						}
-					}
+					{"match": {"itemName": item}}
 				],
 				"filter" : [
-				  {"range" : {"average_price" : {"gte" : average}}}
-				  ]
+					{"range" : {"average_price" : {"gte" : value}}}
+				]
 			}
 		}
     }
@@ -160,12 +149,12 @@ def itemPriceHigherThanAverage():
 	else:
 		return 'No item found'
 
+#list of cities where certain item is higher than certain value
 @priceQueries_api.route('/api/itemPriceLowerThanAverage')
 def itemPriceLowerThanAverage():
 	item = request.args.get('item', '')
-	place = request.args.get('place', '')
 	offset = int(request.args.get('from', '0'))
-	average = float(request.args.get('average', '0'))
+	value = float(request.args.get('value', '0'))
 	size = int(request.args.get('size', util.defaultSize))
 	query = {
 		"from" : offset, 
@@ -174,21 +163,10 @@ def itemPriceLowerThanAverage():
 			"bool" : {
 				"must" : [
 					{"match": {"itemName": item}},
-					{
-						"has_parent" : {
-							"parent_type": "region",
-							"query": {
-								"multi_match": {
-								  "query" : place,
-								"fields" :  ["univRegion", "regionName"] }
-							},
-							"inner_hits": { "_source" : ["univRegion", "regionName"]}
-						}
-					}
 				],
 				"filter" : [
-				  {"range" : {"average_price" : {"lte" : average}}}
-				  ]
+					{"range" : {"average_price" : {"lte" : value}}}
+				]
 			}
 		}
     }
@@ -197,5 +175,3 @@ def itemPriceLowerThanAverage():
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
 		return 'No item found'
-
-
