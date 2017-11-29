@@ -16,7 +16,7 @@ def createUnivIndex():
 			"doc": {
 				"properties": {
 					"website": {
-						"enabled": False
+						"enabled": "false"
 					}
 				}
 			}
