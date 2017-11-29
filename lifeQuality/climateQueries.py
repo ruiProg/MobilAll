@@ -281,7 +281,6 @@ def climateFactorsInOut():
 	for item in exclValues:
 		if item in climateFactors:
 			query['query']['bool']['filter'].append({"range" : {climateFactors[item] : {"lte" : 0}}})
-	print(query)
 	res = util.es.search(index=util.climateIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
