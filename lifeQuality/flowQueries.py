@@ -150,3 +150,31 @@ def outgoingPerCountry():
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
 		return "nothing"
+
+
+#Most recent entry from country to another
+@flowQueries_api.route('/api/mostRecentEntry')
+def mostRecentEntry():
+    orig = request.args.get('orig','')
+    dest = request.args.get('dest','')
+    query = {
+        "size" : 1,
+        "query" : {
+            "bool": {
+                "must": [
+                    {  "match": { "To" : dest } },
+                    {  "match": { "From" : orig } }
+                ]
+            }
+        },
+        "sort": [
+            {"Time": {
+                "order": "desc"}
+            }
+        ]
+    }
+    res = util.es.search(index=util.flowsIndex, body=query)
+    if res['hits']['hits']:
+        return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+    else:
+        return "nothing"
