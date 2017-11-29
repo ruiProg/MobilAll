@@ -168,3 +168,44 @@ def searchAll():
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
 		return input + " not found"
+		
+@univQueries_api.route('/api/outgoingPerCountry')
+def outgoingPerCountry():
+	country = request.args.get('country', '')
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from": offset,
+		"size": size,
+		"query": {
+			"constant_score":{
+				"filter" : {
+					"match":{ "Time": "2015" }
+				}
+			}	
+		},
+		"aggs": {
+			"outgoing":{
+				"sum":{
+					"field" : "Int.parseInt(doc['Value'].Value)"
+				}
+			}
+		}	
+	}
+	res = util.es.search(index=util.univsIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return " not found"
+
+
+
+
+
+
+
+
+	
+		
+		
+		
