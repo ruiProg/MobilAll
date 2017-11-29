@@ -25,8 +25,19 @@ def createUnivIndex():
 	util.es.indices.create(index=util.univsIndex, body=doc)
 
 def createFlowIndex():
-	doc = {
-
+	doc =  {
+    	"mappings": {
+        	"doc": {
+            	"properties": {
+                	"Value": {
+                    	"type": "integer"
+                	},
+					"Time": {
+                    	"type": "integer"
+                	}
+            	}
+        	}
+     	}
 	}
 	util.es.indices.create(index=util.flowsIndex, body=doc)
 
