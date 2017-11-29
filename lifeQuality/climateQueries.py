@@ -234,7 +234,7 @@ def lowestTemperature():
 				    	},
 				    	"aggs": {
 				    		"lowest": {
-				    			"max": {
+				    			"min": {
 				        			"field": "temp_low_min"
 				        		}
 				      		}
