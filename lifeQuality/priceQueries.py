@@ -122,8 +122,8 @@ def categorybyPlace():
 	else:
 		return 'No item found'
 
-#list of cities where certain item is higher than certain value
-@priceQueries_api.route('/api/itemPriceHigherThanAverage')
+#list of cities where certain item price is higher than certain value
+@priceQueries_api.route('/api/itemPriceHigherThan')
 def itemPriceHigherThanAverage():
 	item = request.args.get('item', '')
 	offset = int(request.args.get('from', '0'))
@@ -135,11 +135,20 @@ def itemPriceHigherThanAverage():
 		"query" : { 
 			"bool" : {
 				"must" : [
-					{"match": {"itemName": item}}
+					{"match": {"itemName": item}},
+					{
+						"has_parent" : {
+							"parent_type": "region",
+							"query": {
+								"match_all": {}
+							},
+							"inner_hits": { "_source" : ["univRegion", "regionName"]}
+						}
+					}
 				],
 				"filter" : [
-					{"range" : {"average_price" : {"gte" : value}}}
-				]
+				  {"range" : {"average_price" : {"gte" : value}}}
+				  ]
 			}
 		}
     }
@@ -149,8 +158,8 @@ def itemPriceHigherThanAverage():
 	else:
 		return 'No item found'
 
-#list of cities where certain item is higher than certain value
-@priceQueries_api.route('/api/itemPriceLowerThanAverage')
+#list of cities where certain item price is lower than certain value
+@priceQueries_api.route('/api/itemPriceLowerThan')
 def itemPriceLowerThanAverage():
 	item = request.args.get('item', '')
 	offset = int(request.args.get('from', '0'))
@@ -163,13 +172,65 @@ def itemPriceLowerThanAverage():
 			"bool" : {
 				"must" : [
 					{"match": {"itemName": item}},
+					{
+						"has_parent" : {
+							"parent_type": "region",
+							"query": {
+								"match_all": {}
+							},
+							"inner_hits": { "_source" : ["univRegion", "regionName"]}
+						}
+					}
 				],
 				"filter" : [
-					{"range" : {"average_price" : {"lte" : value}}}
-				]
+				  {"range" : {"average_price" : {"lte" : value}}}
+				  ]
 			}
 		}
     }
+	res = util.es.search(index=util.pricesIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
+
+#Obtain places sorted by a item price
+@priceQueries_api.route('/api/sortItemPrices')
+def sortItemPrices():
+	item = request.args.get('item', '')
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from" : offset, 
+		"size" :size,
+		"query" : { 
+			"bool" : {
+				"must" : [
+					{"multi_match" : {
+						"query": item,
+						"fields": ["itemName", "category"]
+						}
+					},
+					{
+						"has_parent" : {
+							"parent_type": "region",
+							"query": {
+								"match_all": {}
+							},
+							"inner_hits": { "_source" : ["univRegion", "regionName"]}
+						}
+					}
+				]
+			}
+		},
+		"sort": [
+		  {
+		    "average_price": {
+		      "order": "asc"
+		    }
+		  }
+		]
+	}
 	res = util.es.search(index=util.pricesIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})

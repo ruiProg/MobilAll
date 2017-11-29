@@ -287,7 +287,7 @@ def climateFactorsInOut():
 	else:
 		return 'No item found'
 
-#Sort by factor
+#Obtain places sorted by climate factors
 @climateQueries_api.route('/api/sortClimate')
 def sortClimate():
 	sortVal = request.args.get('sortVal', '0')
@@ -297,17 +297,13 @@ def sortClimate():
 		"from" : offset, 
 		"size" : size,
 		"query" : {
-		  "bool": {
-		    "must": [{
-    			"has_parent" : {
-    				"parent_type": "city", 
-    				"query" :{
-    					"match_all": {}
-    				},
-    				"inner_hits": { "_source" : ["univRegion", "regionName"]}
-    			}
-		    }]
-		  }
+			"has_parent" : {
+				"parent_type": "city", 
+    			"query" :{
+    				"match_all": {}
+    			},
+    			"inner_hits": { "_source" : ["univRegion", "regionName"]}
+    		}
 		}
 	}
 	if sortVal in climateFactors:

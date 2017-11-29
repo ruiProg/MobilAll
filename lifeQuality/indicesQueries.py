@@ -21,7 +21,7 @@ indexFactors = {
 
 #Indices queries
 
-#get place indices
+#get one place indices
 @indicesQueries_api.route('/api/placeIndices')
 def placeIndices():
 	name = request.args.get('name', '')
@@ -46,7 +46,7 @@ def placeIndices():
 	else:
 		return "Place not found"
 
-#Sort by index
+#Obtain places sorted by a given index
 @indicesQueries_api.route('/api/sortIndices')
 def sortIndices():
 	sortVal = request.args.get('sortVal', '0')
