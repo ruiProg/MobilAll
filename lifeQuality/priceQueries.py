@@ -236,3 +236,40 @@ def sortItemPrices():
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
 		return 'No item found'
+
+
+#Check how reliable is the information about one city item prices
+@priceQueries_api.route('/api/priceReliability')
+def priceReliability():
+	place = request.args.get('place', '')
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from" : offset, 
+		"size" :size,
+		"query" : {
+			"bool" :{
+				"must" : [
+					{"multi_match": {
+						"query" : place,
+						"fields" :  ["univRegion", "regionName"] }},
+						{
+							"has_child" : {
+								"type": "price", 
+								"query": {
+									"match_all": {}
+								}
+							}
+						}
+				]
+			}
+		}
+		
+	}
+	res = util.es.search(index=util.pricesIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
+
+
