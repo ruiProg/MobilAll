@@ -35,11 +35,38 @@ def flowTrends():
 	else:
 		return 'No trend found'
 
+
+#Average count of people going from one country to another
+@flowQueries_api.route('/api/averageFlow')
+def averageFlow():
+    orig = request.args.get('orig','')
+    dest = request.args.get('dest','')
+    query = {
+        "size" : 0,
+        "query" : {
+            "bool": {
+                "must": [
+                    {  "match": { "To" : dest } },
+                    {  "match": { "From" : orig } }
+                ]
+            }
+        },
+        "aggs" :{
+            "average" : {
+                "avg" : {
+                    "field": "Value"
+                }
+            }
+        }
+    }
+    res = util.es.search(index=util.flowsIndex, body=query)
+    return jsonify(res['aggregations']['average'])
+
 #Incoming flows trends
 @flowQueries_api.route('/api/incomingTrends')
 def incomingTrends():
     country = request.args.get('country','')
-    maxCoutries = 250
+    maxCountries = 250
     query = {
 		"size" : 0,
         "query" : { 
@@ -54,7 +81,7 @@ def incomingTrends():
                     "order": {
                         "average" : "desc"
                     },
-                    "size" : maxCoutries
+                    "size" : maxCountries
                 },
                 "aggs":{
                     "average" :{
@@ -73,7 +100,7 @@ def incomingTrends():
 @flowQueries_api.route('/api/outcomingTrends')
 def outcomingTrends():
     country = request.args.get('country','')
-    maxCoutries = 250
+    maxCountries = 250
     query = {
 		"size" : 0,
         "query" : { 
@@ -88,7 +115,7 @@ def outcomingTrends():
                     "order": {
                         "average" : "desc"
                     },
-                    "size" : maxCoutries
+                    "size" : maxCountries
                 },
                 "aggs":{
                     "average" :{
