@@ -252,8 +252,8 @@ def lowestTemperature():
 #Include, exclude factors
 @climateQueries_api.route('/api/climateFactors')
 def climateFactorsInOut():
-	inclValues = request.args.getlist('include')
-	exclValues = request.args.getlist('exclude')
+	inclValues = list(set(request.args.getlist('include')))
+	exclValues = list(set(request.args.getlist('exclude')))
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
 	query = {
@@ -281,6 +281,37 @@ def climateFactorsInOut():
 	for item in exclValues:
 		if item in climateFactors:
 			query['query']['bool']['filter'].append({"range" : {climateFactors[item] : {"lte" : 0}}})
+	res = util.es.search(index=util.climateIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
+
+#Sort by factor
+@climateQueries_api.route('/api/sortClimate')
+def sortClimate():
+	sortVal = request.args.get('sortVal', '0')
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from" : offset, 
+		"size" : size,
+		"query" : {
+		  "bool": {
+		    "must": [{
+    			"has_parent" : {
+    				"parent_type": "city", 
+    				"query" :{
+    					"match_all": {}
+    				},
+    				"inner_hits": { "_source" : ["univRegion", "regionName"]}
+    			}
+		    }]
+		  }
+		}
+	}
+	if sortVal in climateFactors:
+		query['sort'] = {climateFactors[sortVal] : {"order" : "desc"}}
 	res = util.es.search(index=util.climateIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
