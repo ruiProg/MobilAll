@@ -2,6 +2,21 @@ from flask import Blueprint, jsonify, request
 import util, mobilAll
 
 climateQueries_api = Blueprint('climateQueries_api', __name__)
+climateFactors = {
+	"hail": "changeofhailday", 
+	"snow" : "chanceofsnowonground",
+	"tornado": "chanceoftornadoday",
+	"rain" : "chanceofrainday",
+	"fog" :  "chanceoffogday",
+	"windy" : "chanceofwindyday",
+	"thunder" : "chanceofthunderday",
+	"sultry" : "chanceofsultryday",
+	"cloudy" : "chanceofcloudyday",
+	"sunnycloudy" : "chanceofsunnycloudyday",
+	"partlycloudy" : "chanceofpartlycloudyday",
+	"humid" : "chanceofhumidday",
+	"precip" : "chanceofprecip"
+}
 
 #Climate queries
 
@@ -118,9 +133,9 @@ def climateMonthBestCities():
 	else:
 		return 'No item found'
 
-#Check which month, city pair have temperatures between certain limits
-@climateQueries_api.route('/api/climateLimits')
-def climateLimits():
+#Check which month, city pair have average temperatures between certain limits
+@climateQueries_api.route('/api/temperatureLimits')
+def temperatureLimits():
 	month = request.args.get('month','')
 	place = request.args.get('place','')
 	minTemp = float(request.args.get('min', '0'))
@@ -152,6 +167,121 @@ def climateLimits():
 		query['query']['bool']['must'][0]['has_parent']['query'] = {"match": { "regionName": place}}
 	if month:
 		query['query']['bool']['must'].append({"match" : {"month" : month}})
+	res = util.es.search(index=util.climateIndex, body=query)
+	if res['hits']['hits']:
+		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
+	else:
+		return 'No item found'
+
+#Highest temperature per city
+@climateQueries_api.route('/api/highestTemperature')
+def highestTemperature():
+	nameSort = int(request.args.get('sort', '0'))
+	maxCities = 2000
+	query = {
+		"size": 0,
+		"aggs" : {
+			"cities" : {
+				"terms" : {
+					"field" : "univRegion.keyword",
+					"order": {
+					   "to-climate>highest" : "desc"
+					 },
+					"size": maxCities
+				},
+				"aggs": {
+				  	"to-climate": {
+				    	"children": {
+				    		"type": "climate"
+				    	},
+				    	"aggs": {
+				    		"highest": {
+				    			"max": {
+				        			"field": "temp_high_max"
+				        		}
+				      		}
+				    	}
+				    }
+				}
+			}
+		}
+	}
+	if nameSort > 0:
+		query['aggs']['cities']['terms']['order'] = { "_key" : "asc" }
+	res = util.es.search(index=util.climateIndex, body=query)
+	return jsonify(res['aggregations']['cities']['buckets'])
+
+#Lowest temperature per city
+@climateQueries_api.route('/api/lowestTemperature')
+def lowestTemperature():
+	nameSort = int(request.args.get('sort', '0'))
+	maxCities = 2000
+	query = {
+		"size": 0,
+		"aggs" : {
+			"cities" : {
+				"terms" : {
+					"field" : "univRegion.keyword",
+					"order": {
+					   "to-climate>lowest" : "asc"
+					 },
+					"size": maxCities
+				},
+				"aggs": {
+				  	"to-climate": {
+				    	"children": {
+				    		"type": "climate"
+				    	},
+				    	"aggs": {
+				    		"lowest": {
+				    			"max": {
+				        			"field": "temp_low_min"
+				        		}
+				      		}
+				    	}
+				    }
+				}
+			}
+		}
+	}
+	if nameSort > 0:
+		query['aggs']['cities']['terms']['order'] = { "_key" : "asc" }
+	res = util.es.search(index=util.climateIndex, body=query)
+	return jsonify(res['aggregations']['cities']['buckets'])
+
+#Include, exclude factors
+@climateQueries_api.route('/api/climateFactors')
+def climateFactorsInOut():
+	inclValues = request.args.getlist('include')
+	exclValues = request.args.getlist('exclude')
+	offset = int(request.args.get('from', '0'))
+	size = int(request.args.get('size', util.defaultSize))
+	query = {
+		"from" : offset, 
+		"size" : size,
+		"query" : {
+		  "bool": {
+		    "must": [{
+    			"has_parent" : {
+    				"parent_type": "city", 
+    				"query" :{
+    					"match_all": {}
+    				},
+    				"inner_hits": { "_source" : ["univRegion", "regionName"]}
+    			}
+		    }],
+		    "filter": [
+		    ]
+		  }
+		}
+	}
+	for item in inclValues:
+		if item in climateFactors:
+			query['query']['bool']['filter'].append({"range" : {climateFactors[item] : {"gt" : 0}}})
+	for item in exclValues:
+		if item in climateFactors:
+			query['query']['bool']['filter'].append({"range" : {climateFactors[item] : {"lte" : 0}}})
+	print(query)
 	res = util.es.search(index=util.climateIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})

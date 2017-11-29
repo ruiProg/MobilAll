@@ -2,27 +2,25 @@ import util
 
 def createUnivIndex():
 	doc = {
-	"settings": {
+		"settings": {
 			"analysis": {
 				"analyzer": {
-					"folding": {
+					"default": {
 						"tokenizer": "standard",
-						"filter":  [ "lowercase", "asciifolding" ]
+						"filter":  [ "standard", "lowercase", "asciifolding", "word_delimiter" ]
 					}
 				}
 			}
-		 },
-		 "mappings": {
+		},
+		"mappings": {
 			"doc": {
 				"properties": {
 					"website": {
-						"type": "text",
-						"index": "false"
+						"enabled": False
 					}
 				}
 			}
-		 }
-
+		}
 	}
 	util.es.indices.create(index=util.univsIndex, body=doc)
 

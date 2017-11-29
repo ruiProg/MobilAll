@@ -3,10 +3,14 @@ import util
 
 univQueries_api = Blueprint('univQueries_api', __name__)
 
+# University queries
+
+# list all universities
 @univQueries_api.route('/api/universities')
 def universityList():
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
+	nameSort = int(request.args.get('sort', '0'))
 	query = {
 		"from": offset,
 		"size": size,
@@ -14,17 +18,21 @@ def universityList():
 			"match_all": {}
 		}		
 	}
+	if nameSort > 0:
+		query['sort'] = ["name.keyword"]
 	res = util.es.search(index=util.univsIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
-		return "University is not found"
+		return "University not found"
 		
+#find university by name		
 @univQueries_api.route('/api/university')
 def findUniversity():
 	name = request.args.get('name', '')
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
+	nameSort = int(request.args.get('sort', '0'))
 	query = {
 		"from": offset,
 		"size": size,
@@ -34,17 +42,21 @@ def findUniversity():
 			}
 		}		
 	}
+	if nameSort > 0:
+		query['sort'] = ["name.keyword"]
 	res = util.es.search(index=util.univsIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
-		return "University is not found"	
-		
+		return "University not found"	
+	
+#find the list universities in one city		
 @univQueries_api.route('/api/univInCity')
 def findUniversitiesInCity():
 	city = request.args.get('city', '')
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
+	nameSort = int(request.args.get('sort', '0'))
 	query = {
 		"from": offset,
 		"size": size,
@@ -54,17 +66,21 @@ def findUniversitiesInCity():
 			}
 		}		
 	}
+	if nameSort > 0:
+		query['sort'] = ["name.keyword"]
 	res = util.es.search(index=util.univsIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
-		return "No university is found in " + city 	
+		return "No university found in " + city 	
 		
+#find the list universities in one state	
 @univQueries_api.route('/api/univInState')
 def findUniversitiesInState():
 	state = request.args.get('state', '')
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
+	nameSort = int(request.args.get('sort', '0'))
 	query = {
 		"from": offset,
 		"size": size,
@@ -73,17 +89,21 @@ def findUniversitiesInState():
 			"match": {"state": state}
 		}		
 	}
+	if nameSort > 0:
+		query['sort'] = ["name.keyword"]
 	res = util.es.search(index=util.univsIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
-		return "No university is found in state of" + state
+		return "No university found in state of " + state
 		
+#find the list universities in one country		
 @univQueries_api.route('/api/univInCountry')
 def findUniversitiesInCountry():
 	country = request.args.get('country', '')
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
+	nameSort = int(request.args.get('sort', '0'))
 	query = {
 		"from": offset,
 		"size": size,
@@ -91,18 +111,22 @@ def findUniversitiesInCountry():
 			"match": {"country": country}
 		}		
 	}
+	if nameSort > 0:
+		query['sort'] = ["name.keyword"]
 	res = util.es.search(index=util.univsIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
-		return "No university is found in" + country
+		return "No university found in " + country
 		
+#find the list of campus of a university (logic behind: a unversity with same name and in the same country can have multiple campus)
 @univQueries_api.route('/api/univOnCampus')
 def findUniversitiesOnCampus():
 	name = request.args.get('name', '')
 	country = request.args.get('country', '')
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
+	nameSort = int(request.args.get('sort', '0'))
 	query = {
 		"from": offset,
 		"size": size,
@@ -115,13 +139,16 @@ def findUniversitiesOnCampus():
 			}
 		}		
 	}
+	if nameSort > 0:
+		query['sort'] = ["name.keyword"]
 	res = util.es.search(index=util.univsIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
-		return name + " is not found in " + country
+		return name + " not found in " + country
 		
-@univQueries_api.route('/api/searchAll')
+#general query, searching on all fields
+@univQueries_api.route('/api/univSearchAll')
 def searchAll():
 	input = request.args.get('input', '')
 	offset = int(request.args.get('from', '0'))
@@ -140,4 +167,4 @@ def searchAll():
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})
 	else:
-		return input + " is not found"
+		return input + " not found"
