@@ -34,6 +34,7 @@ def placeIndices():
 		"query": {
 			"multi_match": {
 				"query": name,
+				"fuzziness": "AUTO",
 				"fields": ["regionName", "univRegion"]
 			}
 		}

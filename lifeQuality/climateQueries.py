@@ -35,6 +35,7 @@ def cityClimate():
 				"query" :{
 					"multi_match" : {
 						"query": name,
+						"fuzziness": "AUTO",
 						"fields": ["univRegion", "regionName"]
 					}
 				},
@@ -67,6 +68,7 @@ def climateBestMonths():
 							"query": {
 								"multi_match": {
 								  "query" : name,
+								  "fuzziness": "AUTO",
 								"fields" :  ["univRegion", "regionName"] }
 							},
 							"inner_hits": { "_source" : ["univRegion", "regionName"]}
@@ -121,7 +123,10 @@ def climateMonthBestCities():
 		"size": size,
 		"query" : {
 			"match": {
-		  		"best_months_to_visit_text": month
+		  		"best_months_to_visit_text": {
+		  			"query" : month,
+		  			"fuzziness" : "AUTO"
+		  		}
 			}
 		},
 		"sort" : {
@@ -167,9 +172,9 @@ def temperatureLimits():
 		}
 	}
 	if place:
-		query['query']['bool']['must'][0]['has_parent']['query'] = {"match": { "regionName": place}}
+		query['query']['bool']['must'][0]['has_parent']['query'] = {"match": { "regionName": {"query" : place, "fuzziness": "AUTO"}}}
 	if month:
-		query['query']['bool']['must'].append({"match" : {"month" : month}})
+		query['query']['bool']['must'].append({"match" : {"month" : {"query" : month, "fuzziness": "AUTO"}}})
 	res = util.es.search(index=util.climateIndex, body=query)
 	if res['hits']['hits']:
 		return jsonify({"nbItems" : res['hits']['total'], "items": [item if util.debug else item['_source'] for item in res['hits']['hits']]})

@@ -35,13 +35,14 @@ def itemPricebyPlace():
 		"query" : { 
 			"bool" : {
 				"must" : [
-					{"match": {"itemName": item}},
+					{"match": {"itemName": {"query" : item, "fuzziness": "AUTO"}}},
 					{
 						"has_parent" : {
 							"parent_type": "region",
 							"query" :{
 								"multi_match" : {
-								"query": place,
+									"query": place,
+									"fuzziness": "AUTO",
 									"fields": ["univRegion", "regionName"]
 								}
 							},
@@ -73,6 +74,7 @@ def placePrices():
 				"query" :{
 					"multi_match" : {
 						"query": place,
+						"fuzziness": "AUTO",
 						"fields": ["univRegion", "regionName"]
 					}
 				},
@@ -99,13 +101,14 @@ def categorybyPlace():
 		"query" : { 
 			"bool" : {
 				"must" : [
-					{"match": {"category": category}},
+					{"match": {"category": {"query" : category, "fuzziness": "AUTO"}}},
 					{
 						"has_parent" : {
 							"parent_type": "region",
 							"query" :{
 								"multi_match" : {
-								"query": place,
+									"query": place,
+									"fuzziness": "AUTO",
 									"fields": ["univRegion", "regionName"]
 								}
 							},
@@ -135,7 +138,7 @@ def itemPriceHigherThanAverage():
 		"query" : { 
 			"bool" : {
 				"must" : [
-					{"match": {"itemName": item}},
+					{"match": {"itemName": {"query": item, "fuzziness": "AUTO"}}},
 					{
 						"has_parent" : {
 							"parent_type": "region",
@@ -162,8 +165,8 @@ def itemPriceHigherThanAverage():
 @priceQueries_api.route('/api/itemPriceLowerThan')
 def itemPriceLowerThanAverage():
 	item = request.args.get('item', '')
-	offset = int(request.args.get('from', '0'))
 	value = float(request.args.get('value', '0'))
+	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
 	query = {
 		"from" : offset, 
@@ -171,7 +174,7 @@ def itemPriceLowerThanAverage():
 		"query" : { 
 			"bool" : {
 				"must" : [
-					{"match": {"itemName": item}},
+					{"match": {"itemName": {"query": item, "fuzziness": "AUTO"}}},
 					{
 						"has_parent" : {
 							"parent_type": "region",
@@ -208,6 +211,7 @@ def sortItemPrices():
 				"must" : [
 					{"multi_match" : {
 						"query": item,
+						"fuzziness": "AUTO",
 						"fields": ["itemName", "category"]
 						}
 					},
@@ -252,6 +256,7 @@ def priceReliability():
 				"must" : [
 					{"multi_match": {
 						"query" : place,
+						"fuzziness": "AUTO",
 						"fields" :  ["univRegion", "regionName"] }},
 						{
 							"has_child" : {

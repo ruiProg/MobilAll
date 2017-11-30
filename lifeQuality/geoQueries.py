@@ -86,7 +86,7 @@ def countryCities():
 		"size": size,
 		"query": {
 			"match": {
-				"country": name
+				"country": {"query" : name, "fuzziness": "AUTO"}
 			}
 		}
 	}
@@ -108,7 +108,7 @@ def stateCities():
 		"size": 0,
 		"query": {
 		  "match": {
-		    "state": name
+		    "state": {"query" : name, "fuzziness": "AUTO"}
 		  }
 		}, 
 		"aggs" : {
@@ -139,7 +139,7 @@ def city():
 		"size": size,
 		"query": {
 			"match": {
-				"city": name
+				"city": {"query" : name, "fuzziness": "AUTO"}
 			}
 		}
 	} 

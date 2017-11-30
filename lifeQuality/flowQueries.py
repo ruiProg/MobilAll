@@ -46,8 +46,8 @@ def averageFlow():
         "query" : {
             "bool": {
                 "must": [
-                    {  "match": { "To" : dest } },
-                    {  "match": { "From" : orig } }
+                    {  "match": { "To" : { "query" : dest, "fuzziness": "AUTO"} } },
+                    {  "match": { "From" : {"query" : orig, "fuzziness": "AUTO"} } }
                 ]
             }
         },
@@ -71,7 +71,7 @@ def incomingTrends():
 		"size" : 0,
         "query" : { 
             "match": {
-                "To" : country
+                "To" : {"query": country, "fuzziness": "AUTO"}
             }
         },
         "aggs" :{
@@ -105,7 +105,7 @@ def outgoingTrends():
 		"size" : 0,
         "query" : { 
             "match": {
-                "From" : country
+                "From" : {"query" : country, "fuzziness": "AUTO"}
             }
         },
         "aggs" :{
@@ -139,7 +139,7 @@ def totalIncoming():
         "size" : 0,
         "query" : { 
             "match": {
-                "To" : country
+                "To" : {"query" : country, "fuzziness": "AUTO"}
             }
         },
         "aggs" :{
@@ -173,7 +173,7 @@ def totalOutgoing():
         "size" : 0,
         "query" : { 
             "match": {
-                "From" : country
+                "From" : {"query" : country, "fuzziness": "AUTO"}
             }
         },
         "aggs" :{
@@ -208,8 +208,8 @@ def mostRecentEntry():
         "query" : {
             "bool": {
                 "must": [
-                    {  "match": { "To" : dest } },
-                    {  "match": { "From" : orig } }
+                    {  "match": { "To" : { "query" : dest, "fuzziness": "AUTO"} } },
+                    {  "match": { "From" : {"query" : orig, "fuzziness": "AUTO"} } }
                 ]
             }
         },

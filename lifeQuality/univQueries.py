@@ -62,7 +62,7 @@ def findUniversitiesInCity():
 		"size": size,
 		"query": {
 			"match": {
-				"city": city
+				"city": {"query" : city, "fuzziness": "AUTO"}
 			}
 		}		
 	}
@@ -86,7 +86,7 @@ def findUniversitiesInState():
 		"size": size,
 		"query": {
 			"match": {"country": "United States"},
-			"match": {"state": state}
+			"match": {"state": {"query" : state, "fuzziness": "AUTO"}}
 		}		
 	}
 	if nameSort > 0:
@@ -108,7 +108,7 @@ def findUniversitiesInCountry():
 		"from": offset,
 		"size": size,
 		"query": {
-			"match": {"country": country}
+			"match": {"country": {"query": country, "fuzziness": "AUTO"}}
 		}		
 	}
 	if nameSort > 0:
@@ -133,8 +133,8 @@ def findUniversitiesOnCampus():
 		"query": {
 			"bool": {
 				"must": [
-					{"match": { "country": country}},
-					{"match": { "name": name}}
+					{"match": { "country": {"query": country, "fuzziness": "AUTO"}}},
+					{"match": { "name": {"query": name, "fuzziness": "AUTO"}}}
 				]
 			}
 		}		
@@ -159,6 +159,7 @@ def searchAll():
 		"query": {
 			"multi_match": {
 				"query": input,
+				"fuzziness": "AUTO",
 				"fields": ["name", "city", "website", "state", "country"]
 			}	
 		}		
