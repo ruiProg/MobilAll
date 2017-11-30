@@ -126,8 +126,8 @@ def categorybyPlace():
 @priceQueries_api.route('/api/itemPriceHigherThan')
 def itemPriceHigherThanAverage():
 	item = request.args.get('item', '')
-	offset = int(request.args.get('from', '0'))
 	value = float(request.args.get('value', '0'))
+	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
 	query = {
 		"from" : offset, 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Page Title</title>
+		<title>Queries</title>
 	</head>
 
 	<body>
@@ -17,6 +17,52 @@
 			<p><a href="/api/lowestTemperature">Lowest temperature per city</a> Fields: sort</p>
 			<p><a href="/api/climateFactors?include=tornado&exclude=sultry">Restrict pair city/month by including or excluding factors</a> Fields: include, exclude, from, size</p>
 			<p><a href="/api/sortClimate?sortVal=rain">Obtain pair city/month sorted by climate factors</a> Fields: sortVal, from, size</p>
+		</section>
+		<section>
+			<h3>Flows</h3>
+			<p><a href="/api/flowTrends">General flow trends</a> Fields: from, size</p>
+			<p><a href="/api/averageFlow?orig=Brazil&dest=Portugal">Average count of people from going from one country to another</a> Fields: orig, dest</p>
+			<p><a href="/api/incomingTrends?country=Portugal">Incoming flow trends</a> Fields: country</p>
+			<p><a href="/api/outgoingTrends?country=Portugal">Outgoing flow trends</a> Fields: country</p>
+			<p><a href="/api/totalIncoming?country=Portugal">Total count of incoming people</a> Fields: country</p>
+			<p><a href="/api/totalOutgoing?country=Portugal">Total count of outgoing people</a> Fields: country</p>
+			<p><a href="/api/mostRecentEntry?orig=Brazil&dest=Portugal">Most recent entry from country to another</a> Fields: orig, dest</p>
+		</section>
+		<section>
+			<h3>Geographic</h3>
+			<p><a href="/api/countries">List of countries with universities</a> Fields: sort</p>
+			<p><a href="/api/cities">List of cities with universities</a> Fields: sort</p>
+			<p><a href="/api/states">List of US states with universities</a> Fields: sort</p>
+			<p><a href="/api/countryCities?country=Portugal">List of cities in one country</a> Fields: country, from, size, sort</p>
+			<p><a href="/api/stateCities?state=California">List of cities in one US state</a> Fields: state, size, sort</p>
+			<p><a href="/api/city?name=Porto">Find City</a> Fields: name, from, size</p>
+			<p><a href="/api/closeCities?lat=41&lon=-9&distance=200">Find close cities to a given position</a> Fields: lat, lon, distance, from, size</p>
+		</section>
+		<section>
+			<h3>Indices</h3>
+			<p><a href="/api/placeIndices?name=Porto">Place Indices</a> Fields: name, from, size, sort</p>
+			<p><a href="/api/sortIndices?sortVal=crime">Sort places by a given index</a> Fields: sortVal, from, size</p>
+		</section>
+		<section>
+			<h3>Universities</h3>
+			<p><a href="/api/universities">All universities</a> Fields: from, size, sort</p>
+			<p><a href="/api/university?name=Minho">Find university by name</a> Fields: name, form, size, sort</p>
+			<p><a href="/api/cityUnivs?city=Porto">List of universities in one city</a> Fields: city, from, size, sort</p>
+			<p><a href="/api/stateUnivs?state=Florida">List of universities in one US state</a> Fields: state, from, size, sort</p>
+			<p><a href="/api/countryUnivs?country=Spain">List of universities in one country</a> Fields: country, from, size, sort</p>
+			<p><a href="/api/univOnCampus?name=Minho&country=Portugal">List of cities with campus from an university</a> Fields: name, country, from, size, sort</p>
+			<p><a href="/api/univSearchAll?input=Universidade">Search user keywords in all fields</a> Fields: input, from, size</p>
+		</section>
+		<section>
+			<h3>Item prices</h3>
+			<p><a href="/api/items">All Items</a> Fields: from, size</p>
+			<p><a href="/api/itemPricebyPlace?item=Meal&place=Porto">Price of an item in a place</a> Fields: item, place, from, size</p>
+			<p><a href="/api/placePrices?place=Porto">List of item prices in a place</a> Fields: place, from, size</p>
+			<p><a href="/api/categorybyPlace?category=restaurants&place=Porto">List of prices of a category in a place</a> Fields: category, place, from, size</p>
+			<p><a href="/api/itemPriceHigherThan?item=meal&value=12">Item prices higher than</a> Fields: item, value, from, size</p>
+			<p><a href="/api/itemPriceLowerThan?item=meal&value=12">Item prices lower than</a> Fields: item, value, from, size</p>
+			<p><a href="/api/sortItemPrices?item=mcdonalds">Sort places by items/collection prices</a> Fields: item, from, size</p>
+			<p><a href="/api/priceReliability?place=Porto">Check how reliable information is</a> Fields: place, from, size</p>
 		</section>
 	</body>
 </html>

@@ -51,7 +51,7 @@ def findUniversity():
 		return "University not found"	
 	
 #find the list universities in one city		
-@univQueries_api.route('/api/univInCity')
+@univQueries_api.route('/api/cityUnivs')
 def findUniversitiesInCity():
 	city = request.args.get('city', '')
 	offset = int(request.args.get('from', '0'))
@@ -75,7 +75,7 @@ def findUniversitiesInCity():
 		return "No university found in " + city 	
 		
 #find the list universities in one state	
-@univQueries_api.route('/api/univInState')
+@univQueries_api.route('/api/stateUnivs')
 def findUniversitiesInState():
 	state = request.args.get('state', '')
 	offset = int(request.args.get('from', '0'))
@@ -98,7 +98,7 @@ def findUniversitiesInState():
 		return "No university found in state of " + state
 		
 #find the list universities in one country		
-@univQueries_api.route('/api/univInCountry')
+@univQueries_api.route('/api/countryUnivs')
 def findUniversitiesInCountry():
 	country = request.args.get('country', '')
 	offset = int(request.args.get('from', '0'))
@@ -119,7 +119,7 @@ def findUniversitiesInCountry():
 	else:
 		return "No university found in " + country
 		
-#find the list of campus of a university (logic behind: a unversity with same name and in the same country can have multiple campus)
+#find the list of campus of a university (logic behind: a university with same name and in the same country can have multiple campus)
 @univQueries_api.route('/api/univOnCampus')
 def findUniversitiesOnCampus():
 	name = request.args.get('name', '')

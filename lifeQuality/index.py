@@ -26,18 +26,6 @@ def createUnivIndex():
 
 def createFlowIndex():
 	doc =  {
-    	"mappings": {
-        	"doc": {
-            	"properties": {
-                	"Value": {
-                    	"type": "integer"
-                	},
-					"Time": {
-                    	"type": "integer"
-                	}
-            	}
-        	}
-     	}
 	}
 	util.es.indices.create(index=util.flowsIndex, body=doc)
 
@@ -65,7 +53,22 @@ def createPriceIndex():
 						"relations": {
 							"region" : "price"
 						}
-                	}
+                	},
+                    "contributors" : {
+                        "enabled" : "false"
+                    },
+                    "yearLastUpdate" : {
+                        "enabled" : "false"
+                    },
+                    "monthLastUpdate": {
+                        "enabled" : "false"
+                    },
+                    "highest_price": {
+                        "enabled" : "false"
+                    },
+                    "lowest_price": {
+                        "enabled" : "false"
+                    }
             	}
         	}
      	}
@@ -74,7 +77,18 @@ def createPriceIndex():
 
 def createIndiceIndex():
 	doc = {
-
+        "mappings": {
+            "doc": {
+                "properties": {
+                    "property_price_to_income_ratio" : {
+                        "enabled" : "false"
+                    },
+                    "traffic_inefficiency_index" : {
+                        "enabled" : "false"
+                    }
+                }
+            }
+        }
 	}
 	util.es.indices.create(index=util.indicesIndex, body=doc)
 

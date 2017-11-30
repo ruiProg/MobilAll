@@ -149,7 +149,7 @@ def city():
 	else:
 		return 'No city found'
 
-#find close cities to a certain point
+#find close cities to a given position
 @geoQueries_api.route('/api/closeCities')
 def closeCities():
 	latVar = float(request.args.get('lat', '0.0'))

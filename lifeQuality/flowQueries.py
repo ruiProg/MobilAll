@@ -5,7 +5,7 @@ flowQueries_api = Blueprint('flowQueries_api', __name__)
 
 #Flows queries
 
-#General flows Trends
+#General flow Trends
 @flowQueries_api.route('/api/flowTrends')
 def flowTrends():
 	offset = int(request.args.get('from', '0'))
@@ -62,7 +62,7 @@ def averageFlow():
     res = util.es.search(index=util.flowsIndex, body=query)
     return jsonify(res['aggregations']['average'])
 
-#Incoming flows trends
+#Incoming flow trends
 @flowQueries_api.route('/api/incomingTrends')
 def incomingTrends():
     country = request.args.get('country','')
