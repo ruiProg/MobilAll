@@ -22,8 +22,8 @@ climateFactors = {
 
 #find climate in a city
 @climateQueries_api.route('/api/cityClimate')
-def placeClimate():
-	place = request.args.get('place', '')
+def cityClimate():
+	name = request.args.get('name', '')
 	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
 	query = {
@@ -34,7 +34,7 @@ def placeClimate():
 				"parent_type": "city", 
 				"query" :{
 					"multi_match" : {
-						"query": place,
+						"query": name,
 						"fields": ["univRegion", "regionName"]
 					}
 				},
@@ -48,12 +48,12 @@ def placeClimate():
 	else:
 		return 'No item found'
 
-#find months in a city that have higher climate index than the threshold
+#find the months in a city that have higher climate index than the threshold
 @climateQueries_api.route('/api/climateBestMonths')
 def climateBestMonths():
-	place = request.args.get('place', '')
-	offset = int(request.args.get('from', '0'))
+	name = request.args.get('name', '')
 	threshold = float(request.args.get('threshold', '0'))
+	offset = int(request.args.get('from', '0'))
 	size = int(request.args.get('size', util.defaultSize))
 	query = {
 		"from" : offset, 
@@ -66,7 +66,7 @@ def climateBestMonths():
 							"parent_type": "city",
 							"query": {
 								"multi_match": {
-								  "query" : place,
+								  "query" : name,
 								"fields" :  ["univRegion", "regionName"] }
 							},
 							"inner_hits": { "_source" : ["univRegion", "regionName"]}
@@ -85,7 +85,7 @@ def climateBestMonths():
 	else:
 		return 'No item found'
 
-#find climate in a city
+#sort cities by their climate index
 @climateQueries_api.route('/api/sortedCityClimate')
 def sortedCityClimate():
 	offset = int(request.args.get('from', '0'))
@@ -123,6 +123,9 @@ def climateMonthBestCities():
 			"match": {
 		  		"best_months_to_visit_text": month
 			}
+		},
+		"sort" : {
+			"climate_index" : {"order" : "desc"}
 		}
 	}
 	if nameSort > 0:

@@ -1,4 +1,4 @@
-from flask import Flask, g
+from flask import Flask, g, render_template
 from geoQueries import geoQueries_api
 from priceQueries import priceQueries_api
 from climateQueries import climateQueries_api
@@ -84,7 +84,4 @@ def close_connection(exception):
 
 @app.route('/')
 def entry():
-	return 'Dev mode'
-
-if __name__ == "__main__":
-	app.run()
+	return render_template('index.html')

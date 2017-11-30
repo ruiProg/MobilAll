@@ -88,6 +88,27 @@ def createClimateIndex():
 						"relations": {
 							"city" : "climate"
 						}
+                	},
+                	"dewpoint_high_min" : {
+                		"enabled" : "false"
+                	},
+                	"dewpoint_high_avg" : {
+                		"enabled" : "false"
+                	},
+                	"dewpoint_high_max" : {
+                		"enabled" : "false"
+                	},
+                	"dewpoint_low_min" : {
+                		"enabled" : "false"
+                	},
+                	"dewpoint_low_avg" : {
+                		"enabled" : "false"
+                	},
+                	"dewpoint_low_max" : {
+                		"enabled" : "false"
+                	},
+                	"chanceofsnowday" : {
+                		"enabled" : "false"
                 	}
             	}
         	}

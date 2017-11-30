@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Page Title</title>
+	</head>
+
+	<body>
+		<h1>Queries</h1>
+		<section>
+			<h3>Climate</h3>
+			<p><a href="/api/cityClimate?name=Lisbon">City climate</a> Fields: name, from, size</p>
+			<p><a href="/api/climateBestMonths?name=Lisbon&threshold=99">Months in a city with climate index higher than</a> Fields: name, threshold, from, size</p>
+			<p><a href="/api/sortedCityClimate">Sort cities by climate index</a> Fields: from, size</p>
+			<p><a href="/api/climateMonthBestCities?month=January">Best cities to visit in a month</a> Fields: month, from, size, sort</p>
+			<p><a href="/api/temperatureLimits?month=January&min=12&max=18">Temperature limits</a> Fields: month, place, min, max, from, size</p>
+			<p><a href="/api/highestTemperature">Highest temperature per city</a> Fields: sort</p>
+			<p><a href="/api/lowestTemperature">Lowest temperature per city</a> Fields: sort</p>
+		</section>
+	</body>
+</html>

@@ -1,3 +1,4 @@
 LOGSTASH=C:\Elastic\Logstash
 KIBANA=C:\Elastic\Kibana\bin\kibana.bat
 FLASK_APP=mobilAll.py
+FLASK_DEBUG=1
