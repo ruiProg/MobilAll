@@ -8,8 +8,6 @@ priceQueries_api = Blueprint('priceQueries_api', __name__)
 #all items
 @priceQueries_api.route('/api/items')
 def items():
-	offset = int(request.args.get('from', '0'))
-	size = int(request.args.get('size', util.defaultSize))
 	itList = [
 		{
 			"id" : row['id'],
