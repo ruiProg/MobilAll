@@ -1,0 +1,42 @@
+Flow:
+From (Country)
+Time (Year)
+To (Country)
+Value (integer)
+
+Category
+
+Location
+
+Country (subclass of Location)
+
+State (subclass of Location)
+
+City (subclass of Location):
+geopoint location
+
+Item:
+category (Category)
+
+ItemPrice (subclass of Item):
+region (Location)
+yearUpdated (integer)
+monthUpdated (integer)
+contributors (integer)
+rent (integer)
+cpi (integer)
+lowest price (integer)
+average price (integer)
+highest price (integer)
+
+University
+
+UniversityEntity (subclass University)
+
+UniversityCampus (subclass University):
+entity (UniversityEntity)
+location (Location)
+
+Not used:
+Weather (almost exclusively numeric data | nothing interesting)
+Indices (almost exclusively numeric data | nothing interesting)
