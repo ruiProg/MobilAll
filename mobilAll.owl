@@ -39,25 +39,41 @@
 
     <!-- http://www.semanaticweb.org/mobilAll#hasCategory -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasCategory"/>
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasCategory">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#hasEntity -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasEntity">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#hasLocation -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasLocation">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
     
 
 
     <!-- http://www.semanaticweb.org/mobilAll#hasMonth -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasMonth"/>
-    
-
-
-    <!-- http://www.semanaticweb.org/mobilAll#hasRegion -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasRegion"/>
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasMonth">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
     
 
 
     <!-- http://www.semanaticweb.org/mobilAll#hasYear -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasYear"/>
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasYear">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
     
 
 
@@ -95,18 +111,6 @@
     <!-- http://www.semanaticweb.org/mobilAll#contributors -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#contributors"/>
-    
-
-
-    <!-- http://www.semanaticweb.org/mobilAll#hasEntity -->
-
-    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasEntity"/>
-    
-
-
-    <!-- http://www.semanaticweb.org/mobilAll#hasLocation -->
-
-    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasLocation"/>
     
 
 
@@ -196,7 +200,14 @@
 
     <!-- http://www.semanaticweb.org/mobilAll#Item -->
 
-    <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#Item"/>
+    <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#Item">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasCategory"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
     
 
 
@@ -204,6 +215,24 @@
 
     <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#ItemPrice">
         <rdfs:subClassOf rdf:resource="http://www.semanaticweb.org/mobilAll#Item"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasLocation"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Location"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasMonth"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasYear"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -218,6 +247,7 @@
 
     <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#Month">
         <rdfs:subClassOf rdf:resource="http://www.semanaticweb.org/mobilAll#Date"/>
+        <owl:disjointWith rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
     </owl:Class>
     
 
@@ -240,6 +270,19 @@
 
     <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#UniversityCampus">
         <rdfs:subClassOf rdf:resource="http://www.semanaticweb.org/mobilAll#University"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasEntity"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#UniversityEntity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasLocation"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Location"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanaticweb.org/mobilAll#UniversityEntity"/>
     </owl:Class>
     
 
@@ -257,6 +300,28 @@
     <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#Year">
         <rdfs:subClassOf rdf:resource="http://www.semanaticweb.org/mobilAll#Date"/>
     </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanaticweb.org/mobilAll#Category"/>
+            <rdf:Description rdf:about="http://www.semanaticweb.org/mobilAll#Date"/>
+            <rdf:Description rdf:about="http://www.semanaticweb.org/mobilAll#Flow"/>
+            <rdf:Description rdf:about="http://www.semanaticweb.org/mobilAll#Item"/>
+            <rdf:Description rdf:about="http://www.semanaticweb.org/mobilAll#Location"/>
+            <rdf:Description rdf:about="http://www.semanaticweb.org/mobilAll#University"/>
+        </owl:members>
+    </rdf:Description>
 </rdf:RDF>
 
 
