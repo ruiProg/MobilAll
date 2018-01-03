@@ -23,13 +23,17 @@
 
     <!-- http://www.semanaticweb.org/mobilAll#cameFrom -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#cameFrom"/>
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#cameFrom">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
     
 
 
     <!-- http://www.semanaticweb.org/mobilAll#happenedIn -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#happenedIn"/>
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#happenedIn">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
     
 
 
@@ -59,7 +63,9 @@
 
     <!-- http://www.semanaticweb.org/mobilAll#wentTo -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#wentTo"/>
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#wentTo">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
     
 
 
@@ -165,7 +171,26 @@
 
     <!-- http://www.semanaticweb.org/mobilAll#Flow -->
 
-    <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#Flow"/>
+    <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#Flow">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#cameFrom"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#happenedIn"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#wentTo"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
     
 
 
