@@ -306,6 +306,249 @@
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#April -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#April">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#August -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#August">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Brazil -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Brazil">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Croatia -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Croatia">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#December -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#December">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#February -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#February">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#FlowPortugalCroatia12 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#FlowPortugalCroatia12">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Flow"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#FlowPortugalCroatia15 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#FlowPortugalCroatia15">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Flow"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#France -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#France">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Germany -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Germany">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Greece -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Greece">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Italy -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Italy">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#January -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#January">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#July -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#July">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#June -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#June">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#March -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#March">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#May -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#May">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#November -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#November">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#October -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#October">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Portugal -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Portugal">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#September -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#September">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Spain -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Spain">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#United_Kingdom -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#United_Kingdom">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#2012 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#2012">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#2013 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#2013">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#2014 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#2014">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#2015 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#2015">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#2016 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#2016">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#2017 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#2017">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // General axioms
     //
     ///////////////////////////////////////////////////////////////////////////////////////
