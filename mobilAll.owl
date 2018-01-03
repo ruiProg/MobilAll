@@ -45,6 +45,14 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#hasCountry -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasCountry">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#hasEntity -->
 
     <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasEntity">
@@ -66,6 +74,20 @@
     <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasMonth">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
     </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#hasState -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasState">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#hasType -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanaticweb.org/mobilAll#hasType"/>
     
 
 
@@ -98,37 +120,39 @@
 
     <!-- http://www.semanaticweb.org/mobilAll#amount -->
 
-    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#amount"/>
+    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#amount">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:DatatypeProperty>
     
 
 
     <!-- http://www.semanaticweb.org/mobilAll#averagePrice -->
 
-    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#averagePrice"/>
+    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#averagePrice">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:DatatypeProperty>
     
 
 
     <!-- http://www.semanaticweb.org/mobilAll#contributors -->
 
-    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#contributors"/>
+    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#contributors">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:DatatypeProperty>
     
 
 
     <!-- http://www.semanaticweb.org/mobilAll#highestPrice -->
 
-    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#highestPrice"/>
+    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#highestPrice">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:DatatypeProperty>
     
 
 
     <!-- http://www.semanaticweb.org/mobilAll#lowestPrice -->
 
-    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#lowestPrice"/>
-    
-
-
-    <!-- http://www.semanaticweb.org/mobilAll#situatedIn -->
-
-    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#situatedIn">
+    <owl:DatatypeProperty rdf:about="http://www.semanaticweb.org/mobilAll#lowestPrice">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
     </owl:DatatypeProperty>
     
@@ -155,6 +179,20 @@
 
     <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#City">
         <rdfs:subClassOf rdf:resource="http://www.semanaticweb.org/mobilAll#Location"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasCountry"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasState"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#State"/>
+                    </owl:Restriction>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -229,10 +267,25 @@
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasType"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasYear"/>
                 <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Year"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#ItemType -->
+
+    <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#ItemType">
+        <rdfs:subClassOf rdf:resource="http://www.semanaticweb.org/mobilAll#Item"/>
     </owl:Class>
     
 
@@ -256,6 +309,12 @@
 
     <owl:Class rdf:about="http://www.semanaticweb.org/mobilAll#State">
         <rdfs:subClassOf rdf:resource="http://www.semanaticweb.org/mobilAll#Location"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanaticweb.org/mobilAll#hasCountry"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -314,6 +373,22 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#Apartment_Center -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Apartment_Center">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Apartment_Purchase -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Apartment_Purchase">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#April -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#April">
@@ -330,6 +405,22 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#Banana -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Banana">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Braga -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Braga">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#Brazil -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Brazil">
@@ -338,10 +429,60 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#California -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#California">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#State"/>
+        <hasCountry rdf:resource="http://www.semanaticweb.org/mobilAll#United_States"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Cheap_Meal -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Cheap_Meal">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Childcare -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Childcare">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Clothing_And_Shoes -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Clothing_And_Shoes">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Coke -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Coke">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#Croatia -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Croatia">
         <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Dallas -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Dallas">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+        <hasState rdf:resource="http://www.semanaticweb.org/mobilAll#Texas"/>
     </owl:NamedIndividual>
     
 
@@ -362,10 +503,30 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#Fitness_Club -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Fitness_Club">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Florida -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Florida">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#State"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#FlowPortugalCroatia12 -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#FlowPortugalCroatia12">
         <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Flow"/>
+        <cameFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Croatia"/>
+        <cameFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Portugal"/>
+        <happenedIn rdf:resource="http://www.semanaticweb.org/mobilAll#2012"/>
+        <amount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</amount>
     </owl:NamedIndividual>
     
 
@@ -374,6 +535,10 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#FlowPortugalCroatia15">
         <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Flow"/>
+        <cameFrom rdf:resource="http://www.semanaticweb.org/mobilAll#Portugal"/>
+        <happenedIn rdf:resource="http://www.semanaticweb.org/mobilAll#2015"/>
+        <wentTo rdf:resource="http://www.semanaticweb.org/mobilAll#Croatia"/>
+        <amount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</amount>
     </owl:NamedIndividual>
     
 
@@ -402,6 +567,22 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#Guimarães -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Guimarães">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Internet -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Internet">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#Italy -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Italy">
@@ -414,6 +595,14 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#January">
         <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Jeans -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Jeans">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
     </owl:NamedIndividual>
     
 
@@ -434,6 +623,33 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#Lisbon -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Lisbon">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+        <hasCountry rdf:resource="http://www.semanaticweb.org/mobilAll#Portugal"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Los_Angeles -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Los_Angeles">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+        <hasState rdf:resource="http://www.semanaticweb.org/mobilAll#California"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Madrid -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Madrid">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+        <hasCountry rdf:resource="http://www.semanaticweb.org/mobilAll#Spain"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#March -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#March">
@@ -442,10 +658,42 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#Markets -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Markets">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#May -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#May">
         <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Month"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#McMeal -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#McMeal">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Milk -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Milk">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Nike -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Nike">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
     </owl:NamedIndividual>
     
 
@@ -466,10 +714,77 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#Ohio -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Ohio">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#State"/>
+        <hasCountry rdf:resource="http://www.semanaticweb.org/mobilAll#United_States"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Pass -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Pass">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Pepsi -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Pepsi">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Porto -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Porto">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+        <hasCountry rdf:resource="http://www.semanaticweb.org/mobilAll#Portugal"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#Portugal -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Portugal">
         <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Rent_Per_Month -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Rent_Per_Month">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Restaurants -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Restaurants">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Rice -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Rice">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#ItemType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Seattle -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Seattle">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+        <hasState rdf:resource="http://www.semanaticweb.org/mobilAll#Washington"/>
     </owl:NamedIndividual>
     
 
@@ -490,10 +805,115 @@
     
 
 
+    <!-- http://www.semanaticweb.org/mobilAll#Sports_And_Leisure -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Sports_And_Leisure">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Texas -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Texas">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#State"/>
+        <hasCountry rdf:resource="http://www.semanaticweb.org/mobilAll#United_States"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Transportation -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Transportation">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanaticweb.org/mobilAll#United_Kingdom -->
 
     <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#United_Kingdom">
         <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#United_States -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#United_States">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Universidade_do_Minho -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Universidade_do_Minho">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#UniversityEntity"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Universidade_do_Minho_-_Braga -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Universidade_do_Minho_-_Braga">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#UniversityCampus"/>
+        <hasEntity rdf:resource="http://www.semanaticweb.org/mobilAll#Universidade_do_Minho"/>
+        <hasLocation rdf:resource="http://www.semanaticweb.org/mobilAll#Braga"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Universidade_do_Minho_-_Guimarães -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Universidade_do_Minho_-_Guimarães">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#UniversityCampus"/>
+        <hasEntity rdf:resource="http://www.semanaticweb.org/mobilAll#Universidade_do_Minho"/>
+        <hasLocation rdf:resource="http://www.semanaticweb.org/mobilAll#Guimarães"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Universidade_do_Porto -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Universidade_do_Porto">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#UniversityEntity"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Universidade_do_Porto_-_Porto -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Universidade_do_Porto_-_Porto">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#UniversityCampus"/>
+        <hasEntity rdf:resource="http://www.semanaticweb.org/mobilAll#Universidade_do_Porto"/>
+        <hasLocation rdf:resource="http://www.semanaticweb.org/mobilAll#Porto"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Utilities -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Utilities">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#Category"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Washington -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Washington">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#State"/>
+        <hasCountry rdf:resource="http://www.semanaticweb.org/mobilAll#United_States"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanaticweb.org/mobilAll#Zagreb -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanaticweb.org/mobilAll#Zagreb">
+        <rdf:type rdf:resource="http://www.semanaticweb.org/mobilAll#City"/>
+        <hasCountry rdf:resource="http://www.semanaticweb.org/mobilAll#Croatia"/>
     </owl:NamedIndividual>
     
 
