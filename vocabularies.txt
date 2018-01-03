@@ -1,0 +1,8 @@
+GeoNames
+Academic Institution Internal Structure Ontology
+DBPedia
+
+ISO 3166 Country Codes
+Location Vocabulary
+
+(Linked Open Vocabulary)
