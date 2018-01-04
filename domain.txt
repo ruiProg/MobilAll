@@ -4,16 +4,15 @@ Time (Year)
 To (Country)
 Value (integer)
 
-Category
-
 Location
 
 Country (subclass of Location)
 
 State (subclass of Location)
 
-City (subclass of Location):
-geopoint location
+City (subclass of Location)
+
+Category
 
 Item:
 category (Category)
@@ -22,10 +21,10 @@ ItemPrice (subclass of Item):
 region (Location)
 yearUpdated (integer)
 monthUpdated (integer)
-contributors (integer)
+contributors (double)
 lowest price (integer)
-average price (integer)
-highest price (integer)
+average price (double)
+highest price (double)
 
 University
 

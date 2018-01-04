@@ -1,0 +1,33 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ma: <http://www.semanticweb.org/mobilAll#>
+
+SELECT		?city
+WHERE { 	?city rdf:type ma:City }
+
+------------------------------------------------------------------------------------
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ma: <http://www.semanticweb.org/mobilAll#>
+
+SELECT		?location ?type
+WHERE { 	?location rdf:type ?type.
+			?type rdfs:subClassOf ma:Location
+ }
+
+
+----------------------------------------------------------------------------------------
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ma: <http://www.semanticweb.org/mobilAll#>
+
+SELECT	DISTINCT ?country
+WHERE { 	?var1 ma:cameFrom ?country.
+	?var2 ma:wentTo ?country.
+	?var1 ma:happenedIn ?year.
+	?var2 ma:happenedIn ?year
+	FILTER(?year=ma:2015).
+ }
+
+ -----------------------------------------------------------------------------
