@@ -382,6 +382,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Banana">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Markets"/>
     </owl:NamedIndividual>
     
 
@@ -415,6 +416,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Cheap_Meal">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Restaurants"/>
     </owl:NamedIndividual>
     
 
@@ -439,6 +441,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Coke">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Restaurants"/>
     </owl:NamedIndividual>
     
 
@@ -480,6 +483,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Fitness_Club">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Sports_And_Leisure"/>
     </owl:NamedIndividual>
     
 
@@ -564,6 +568,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Internet">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Utilities"/>
     </owl:NamedIndividual>
     
 
@@ -588,6 +593,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Jeans">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Clothing_And_Shoes"/>
     </owl:NamedIndividual>
     
 
@@ -663,6 +669,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#McMeal">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Restaurants"/>
     </owl:NamedIndividual>
     
 
@@ -671,6 +678,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Milk">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Markets"/>
     </owl:NamedIndividual>
     
 
@@ -679,6 +687,7 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Nike">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Clothing_And_Shoes"/>
     </owl:NamedIndividual>
     
 
@@ -712,15 +721,14 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Pass">
         <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
+        <hasCategory rdf:resource="http://www.semanticweb.org/mobilAll#Transportation"/>
     </owl:NamedIndividual>
     
 
 
     <!-- http://www.semanticweb.org/mobilAll#Pepsi -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Pepsi">
-        <rdf:type rdf:resource="http://www.semanticweb.org/mobilAll#ItemType"/>
-    </owl:NamedIndividual>
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/mobilAll#Pepsi"/>
     
 
 
