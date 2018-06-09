@@ -37,10 +37,10 @@ Let's take all into consideration, or do we mean _al_, maybe it’s all, because
 * Kibana Version 6.0.0
 
 ### Install dependencies:
-* ElasticSearch python library -> 'pip install elasticsearch'
-* Scrapy -> 'pip install Scrapy', on windows it may be needed to run 'pip install pypiwin32'
-* Requests -> 'pip install requests'
-* Flask -> 'pip install Flask'
+* ElasticSearch python library -> `pip install elasticsearch`
+* Scrapy -> `pip install Scrapy`, on windows it may be needed to run `pip install pypiwin32`
+* Requests -> `pip install requests`
+* Flask -> `pip install Flask`
 
 In _\<src\>/lifeQuality/config.txt_, change _LOGSTASH_ and _KIBANA_ to the correct paths
 
