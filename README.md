@@ -1,4 +1,4 @@
-Information retrieval for a potential application, hereby named _MobilAll_, using data from universities, cost of living and mobility flows provided by _UNESCO_.
+Information retrieval development for a potential application, hereby named _MobilAll_, using data from universities, cost of living and mobility flows provided by _UNESCO_.
 
 ---
 
@@ -42,7 +42,7 @@ Let's take all into consideration, or do we mean _al_, maybe it’s all, because
 * Requests -> 'pip install requests'
 * Flask -> 'pip install Flask'
 
-In `<src>/lifeQuality`, change LOGSTASH and KIBANA to correct paths
+In _\<src\>/lifeQuality/config.txt_, change _LOGSTASH_ and _KIBANA_ to the correct paths
 
 **Run server**:
 
