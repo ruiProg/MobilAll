@@ -46,7 +46,7 @@ In `<src>/lifeQuality`, change LOGSTASH and KIBANA to correct paths
 
 **Run server**:
 
-`<src>/start.bat [<args>]` or python `<src>/lifeQuality/init.py [<args>]`
+`<src>/start.bat [<args>]` or `python <src>/lifeQuality/init.py [<args>]`
 
 _\<args\>_ can be _-kibana_, _-index_, _-lifeQuality_.
 * no arguments, just run the server
