@@ -50,7 +50,7 @@ In `<src>/lifeQuality`, change LOGSTASH and KIBANA to correct paths
 
 _\<args\>_ can be _-kibana_, _-index_, _-lifeQuality_.
 * no arguments, just run the server
-* _-kibana_, opens a new procress with Kibana
+* _-kibana_, opens a new process with Kibana
 * _-index_, index information (it will open processes to run Scrapy and Logstash)
 * _-lifeQuality_, index only lifeQuality (prices, indices and climate), before running the server
 
